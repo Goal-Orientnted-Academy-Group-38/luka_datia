@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BMW Italia - Luxury & Performance</title>
+    <style>
+        :root {
+            --bmw-blue: #0066b1;
+            --bmw-gray: #f2f2f2;
+            --bmw-dark: #333333;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        body {
+            color: var(--bmw-dark);
+            line-height: 1.6;
+        }
+        
+        header {
+            background-color: var(--bmw-blue);
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            height: 50px;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 2rem;
+        }
+        
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: opacity 0.3s;
+        }
+        
+        nav ul li a:hover {
+            opacity: 0.8;
+        }
+        
+        .hero {
+            height: 80vh;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .hero-content {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+            color: white;
+            padding: 4rem 2rem;
+        }
+        
+        .hero-content h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        
+        .hero-content p {
+            max-width: 600px;
+            font-size: 1.2rem;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+        
+        .section-title {
+            text-align: center;
+            margin: 4rem 0 2rem;
+            font-size: 2.5rem;
+            color: var(--bmw-blue);
+        }
+        
+        .models {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 0 2rem;
+            margin-bottom: 4rem;
+        }
+        
+        .model-card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .model-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        .model-image {
+            height: 200px;
+            overflow: hidden;
+        }
+        
+        .model-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+        
+        .model-card:hover .model-image img {
+            transform: scale(1.05);
+        }
+        
+        .model-info {
+            padding: 1.5rem;
+        }
+        
+        .model-info h3 {
+            color: var(--bmw-blue);
+            margin-bottom: 0.5rem;
+            font-size: 1.8rem;
+        }
+        
+        .model-info p {
+            margin-bottom: 1.5rem;
+            color: #666;
+        }
+        
+        .btn {
+            display: inline-block;
+            background-color: var(--bmw-blue);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        
+        .btn:hover {
+            background-color: #005599;
+        }
+        
+        footer {
+            background-color: var(--bmw-dark);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .footer-column h3 {
+            margin-bottom: 1rem;
+            color: var(--bmw-blue);
+        }
+        
+        .footer-column ul {
+            list-style: none;
+        }
+        
+        .footer-column ul li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .footer-column ul li a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-column ul li a:hover {
+            color: var(--bmw-blue);
+        }
+        
+        .copyright {
+            border-top: 1px solid #444;
+            padding-top: 2rem;
+            color: #aaa;
+        }
+        
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+            }
+            
+            nav ul {
+                margin-top: 1rem;
+            }
+            
+            .hero-content h1 {
+                font-size: 2rem;
+            }
+            
+            .hero-content p {
+                font-size: 1rem;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 841.9 595.3" width="50" height="50">
+                <circle fill="none" stroke="#fff" stroke-width="20" cx="421" cy="298" r="259"/>
+                <path fill="#fff" d="M304 222c-41 0-75 33-75 74s34 75 75 75h232c41 0 75-34 75-75s-34-74-75-74H304zm-5-250c0-41-34-75-75-75S150-69 150-28s34 74 74 74h234c40 0 74-33 74-74s-34-75-74-75H299z"/>
+                <path fill="#fff" d="M441 130c0-40-33-74-74-74s-74 34-74 74 33 75 74 75h147c41 0 75-35 75-75s-34-74-75-74H367z"/>
+            </svg>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#">Modelli</a></li>
+                <li><a href="#">Configuratore</a></li>
+                <li><a href="#">Offerte</a></li>
+                <li><a href="#">Test Drive</a></li>
+                <li><a href="#">Contatti</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <section class="hero">
+        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/9a9caaa9-ccac-4626-92ba-411d0f7c4fae.png" alt="Nuova BMW Serie 8 Coupé in color grigio metallizzato su strada panoramica montuosa al tramonto" />
+        <div class="hero-content">
+            <h1>BMW Serie 8 Coupé</h1>
+            <p>La perfezione del design incontra la potenza senza compromessi. Scopri il nuovo standard della classe sportiva.</p>
+            <a href="#" class="btn">Configura la tua BMW</a>
+        </div>
+    </section>
+    
+    <h2 class="section-title">I nostri modelli più richiesti</h2>
+    
+    <section class="models">
+        <div class="model-card">
+            <div class="model-image">
+                <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/721b66af-81ed-4139-be31-8a0a845b065c.png" alt="BMW Serie 3 Touring in blu elettrico parcheggiata davanti a un edificio moderno" />
+            </div>
+            <div class="model-info">
+                <h3>BMW Serie 3 Touring</h3>
+                <p>Eleganza senza compromessi nello stile di vita attivo. Spazio generoso e prestazioni sportive.</p>
+                <a href="#" class="btn">Scopri di più</a>
+            </div>
+        </div>
+        
+        <div class="model-card">
+            <div class="model-image">
+                <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/419f9fb9-e73c-448f-9047-e0d2bb8f958d.png" alt="BMW X5 in bianco perlato su strada sterrata con panorama montuoso" />
+            </div>
+            <div class="model-info">
+                <h3>BMW X5</h3>
+                <p>Il SUV premium che unisce lusso, spazio e dinamiche di guida tipiche BMW. Perfetto per ogni avventura.</p>
+                <a href="#" class="btn">Scopri di più</a>
+            </div>
+        </div>
+        
+        <div class="model-card">
+            <div class="model-image">
+                <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/f53e5ba4-b883-463a-84ca-1abcac659f0f.png" alt="BMW i4 in rosso metallizzato in showroom illuminato" />
+            </div>
+            <div class="model-info">
+                <h3>BMW i4</h3>
+                <p>Elettrificante per natura. La prima berlina completamente elettrica BMW con autonomia fino a 590 km.</p>
+                <a href="#" class="btn">Scopri di più</a>
+            </div>
+        </div>
+    </section>
+    
+    <h2 class="section-title">La nostra filosofia</h2>
+    
+    <section style="padding: 0 2rem 4rem; max-width: 1200px; margin: 0 auto;">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+            <div style="background-color: var(--bmw-gray); padding: 2rem; border-radius: 8px;">
+                <h3 style="color: var(--bmw-blue); margin-bottom: 1rem;">Design Iconico</h3>
+                <p>Ogni BMW incarna la filosofia del design che combina estetica e funzionalità. Le linee dinamiche e la proporzione perfetta sono il nostro marchio di fabbrica.</p>
+            </div>
+            <div style="background-color: var(--bmw-gray); padding: 2rem; border-radius: 8px;">
+                <h3 style="color: var(--bmw-blue); margin-bottom: 1rem;">Tecnologia Innovativa</h3>
+                <p>Dai motori più efficienti ai sistemi di guida assistita, BMW definisce continuamente nuovi standard tecnologici nel settore automobilistico.</p>
+            </div>
+            <div style="background-color: var(--bmw-gray); padding: 2rem; border-radius: 8px;">
+                <h3 style="color: var(--bmw-blue); margin-bottom: 1rem;">Piacere di Guida</h3>
+                <p>"Sheer Driving Pleasure" non è solo uno slogan, ma una promessa mantenuta in ogni modello BMW attraverso la perfetta armonia tra uomo e macchina.</p>
+            </div>
+        </div>
+    </section>
+    
+    <section style="background-image: linear-gradient(to right, var(--bmw-blue), #003366); color: white; padding: 4rem 2rem; text-align: center;">
+        <h2 style="font-size: 2rem; margin-bottom: 1.5rem;">Pronto per la tua BMW perfetta?</h2>
+        <p style="max-width: 600px; margin: 0 auto 2rem;">Prenota un test drive e scopri personalmente che cosa significa la guida BMW.</p>
+        <a href="#" class="btn" style="background-color: white; color: var(--bmw-blue);">Prenota un test drive</a>
+    </section>
+    
+    <footer>
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3>Modelli</h3>
+                <ul>
+                    <li><a href="#">Tutti i modelli</a></li>
+                    <li><a href="#">Configuratore</a></li>
+                    <li><a href="#">BMW elettriche</a></li>
+                    <li><a href="#">BMW M</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Servizi</h3>
+                <ul>
+                    <li><a href="#">Assistenza clienti</a></li>
+                    <li><a href="#">Accessori BMW</a></li>
+                    <li><a href="#">Finanziamenti</a></li>
+                    <li><a href="#">Manutenzione</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>BMW Italia</h3>
+                <ul>
+                    <li><a href="#">Chi siamo</a></li>
+                    <li><a href="#">Lavora con noi</a></li>
+                    <li><a href="#">Media</a></li>
+                    <li><a href="#">Sostenibilità</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>© 2023 BMW Italia S.p.A. Tutti i diritti riservati.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Animazione hero image con effetto parallax
+        document.addEventListener('DOMContentLoaded', function() {
+            const hero = document.querySelector('.hero');
+            const heroImg = document.querySelector('.hero img');
+            
+            if (hero && heroImg) {
+                window.addEventListener('scroll', function() {
+                    const scrollPosition = window.pageYOffset;
+                    heroImg.style.transform = `translateY(${scrollPosition * 0.3}px)`;
+                });
+            }
+            
+            // Animazione smooth scroll per i pulsanti
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    if (targetId !== '#') {
+                        document.querySelector(targetId).scrollIntoView({
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+            
+            // Animazione di zoom quando il mouse passa sopra alle card dei modelli
+            const modelCards = document.querySelectorAll('.model-card');
+            if (modelCards) {
+                modelCards.forEach(card => {
+                    const img = card.querySelector('.model-image img');
+                    card.addEventListener('mousemove', function(e) {
+                        const rect = card.getBoundingClientRect();
+                        const x = e.clientX - rect.left;
+                        const y = e.clientY - rect.top;
+                        
+                        const centerX = rect.width / 2;
+                        const centerY = rect.height / 2;
+                        
+                        const percentX = (x - centerX) / centerX;
+                        const percentY = (y - centerY) / centerY;
+                        
+                        img.style.transform = `scale(1.05) translate(${percentX * 5}px, ${percentY * 5}px)`;
+                    });
+                    
+                    card.addEventListener('mouseleave', function() {
+                        img.style.transform = 'scale(1.05)';
+                    });
+                });
+            }
+        });
+    </script>
+</body>
+</html>
+

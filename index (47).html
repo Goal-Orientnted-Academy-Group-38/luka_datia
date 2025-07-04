@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .dbody {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            font-family: "Arial", sans-serif;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+        }
+
+        .ai-container {
+            position: relative;
+            width: 80%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .ai-title {
+            font-size: 32px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 20px;
+            color: #00ffe1;
+            text-shadow:
+                0 0 20px #00ffe1,
+                0 0 40px #00ffe1;
+        }
+
+        .input-field {
+            position: relative;
+            margin-top: 20px;
+        }
+
+        .glow-input {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 30px;
+            background: rgba(31, 40, 51, 0.6);
+            color: white;
+            font-size: 18px;
+            text-align: center;
+            outline: none;
+            box-shadow:
+                0 0 10px #00ffe1,
+                0 0 20px #00ffe1,
+                0 0 40px #00ffe1;
+            transition:
+                box-shadow 0.4s ease-in-out,
+                transform 0.2s ease;
+        }
+
+        .glow-input:hover,
+        .glow-input:focus {
+            box-shadow:
+                0 0 15px #00ffe1,
+                0 0 30px #00ffe1,
+                0 0 50px #00ffe1;
+            transform: scale(1.05);
+        }
+
+        .particles-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -2;
+        }
+
+        .particle {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: #00ffe1;
+            border-radius: 50%;
+            animation: float 5s infinite ease-in-out;
+            box-shadow:
+                0 0 10px #00ffe1,
+                0 0 15px #00ffe1;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0);
+                opacity: 0.8;
+            }
+
+            10% {
+                transform: translateY(20px);
+                opacity: 0.4;
+            }
+
+            25% {
+                transform: translateY(0);
+                opacity: 0.8;
+            }
+
+            50% {
+                transform: translateY(-50px);
+                opacity: 0.4;
+            }
+
+            100% {
+                transform: translateY(0);
+                opacity: 0.8;
+            }
+        }
+
+        .ai-response {
+            margin-top: 30px;
+            font-size: 20px;
+            color: #00ffe1;
+            text-shadow: 0 0 10px #00ffe1;
+            font-style: italic;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="dbody">
+        <div class="ai-container">
+            <div class="ai-title">AI Interface</div>
+            <div class="input-field">
+                <input class="glow-input" placeholder="Speak to AI..." />
+            </div>
+            <div class="ai-response">"AI is processing your thoughts..."</div>
+        </div>
+        <div class="particles-bg">
+            <div class="particle" style="top: 10%; left: 20%; animation-duration: 4s;"></div>
+            <div class="particle" style="top: 30%; left: 70%; animation-duration: 6s;"></div>
+            <div class="particle" style="top: 50%; left: 40%; animation-duration: 5s;"></div>
+            <div class="particle" style="top: 70%; left: 60%; animation-duration: 4.5s;"></div>
+        </div>
+    </div>
+
+</body>
+
+</html>

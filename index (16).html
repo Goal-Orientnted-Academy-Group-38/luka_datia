@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Google</title>
+
+    <link rel="stylesheet" href="./style.css">
+
+    <script src="./script.js"></script>
+
+    <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background: url("https://sb.kaleidousercontent.com/67418/1920x1100/2ed9107761/bg.png");
+            background-repeat: no-repeat;
+            background-size: cover;
+            height: 100vh;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        nav {
+            position: absolute;
+            top: 0%;
+            left: 100%;
+            transform: translateX(-100%);
+            width: 260px;
+            height: 60px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        nav img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+        }
+
+        nav i {
+            font-size: 40px;
+            color: white;
+            cursor: pointer;
+            transition: all 100ms ease;
+            border-radius: 50%;
+        }
+
+        nav i:hover {
+            background-color: rgba(128, 128, 128, 0.4);
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+        h1 {
+            color: white;
+            margin-top: 180px;
+            text-align: center;
+            font-size: 100px;
+            color: white;
+            font-weight: 500;
+        }
+
+        input {
+            margin-top: 40px;
+            width: 750px;
+            height: 60px;
+            border-radius: 50px;
+            border: none;
+            outline: none;
+            font-size: 20px;
+            padding-left: 80px;
+        }
+
+        .bx-search {
+            transform: translate(-50%, -50%);
+            position: absolute;
+            margin-left: 45px;
+            margin-top: 70px;
+            font-size: 30px;
+            color: gray;
+        }
+
+        .bxs-microphone {
+            position: absolute;
+            color: gray;
+            font-size: 25px;
+            margin-top: 57px;
+            margin-left: -90px;
+            cursor: pointer;
+        }
+
+        .bxs-camera {
+            position: absolute;
+            color: gray;
+            font-size: 25px;
+            margin-top: 57px;
+            margin-left: -50px;
+            cursor: pointer;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <nav>
+
+        <a href="#">Gmail</a>
+
+        <a href="#">Images</a>
+
+        <i class='bx bx-menu'></i>
+
+        <img
+            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAAAAJbSJIAAAAM1BMVEXk5ueutLeqsbTn6eqpr7PJzc/j5ebf4eLZ3N2wtrnBxsjN0NLGysy6v8HT1tissra8wMNxTKO9AAAFDklEQVR4nO2d3XqDIAxAlfivoO//tEOZWzvbVTEpic252W3PF0gAIcsyRVEURVEURVEURVEURVEURVEURVEURVEURVEURflgAFL/AirAqzXO9R7XNBVcy9TbuMHmxjN6lr92cNVVLKEurVfK/zCORVvW8iUBnC02dj+Wpu0z0Y6QlaN5phcwZqjkOkK5HZyPAjkIjSO4fIdfcOwFKkJlX4zPu7Ha1tIcwR3wWxyFhRG6g4Je0YpSPDJCV8a2Sv2zd1O1x/2WMDZCwljH+clRrHfWCLGK8REMiql//2si5+DKWKcWeAGcFMzzNrXC/0TUwQ2s6+LhlcwjTMlYsUIQzPOCb7YBiyHopyLXIEKPEkI/TgeuiidK/R9FniUDOjRDpvm0RhqjMyyXNjDhCfIMYl1gGjIMIuYsnGEYRMRZOMMunaLVwpWRW008v6fYKDIzxCwVAeNSO90BJW6emelYBRF/kHpYGVaoxTDAaxOFsfP9y8hpJ4xd7gOcij7JNGQ1EYFgkPJa1jQEiYZXRaRINKxSDUW9n+FT82lSKadkiru9/4XPqSLWOekGPoY05TAvLm9orm+YWuwHoBHkZKijNBJGmeb61eL6Ff/6q7bLr7yvv3vKGhpDRjvgjGaPz+gUg6YgcvpyAR2FIZ9U6nEEyZRTovmEU32KichpGn7C17XrfyH9gK/c0CMP05HZIM2uf9sEveizKveBy9/6Qt7o89ne33D525cfcIMW6ab+TMEukQbQbu+xu7X3A9bChmWaCeAkG17bpntwXgWxHaMzGPmUaR5dQZiKqRVeUZ3047fi3nAu28h4CHxCsZAgmEH8Y27jJAhm8c+5RQzRQNVGhVFSfxOYIjp/pP7RxzjevYXVGf4eLt+BJ1vCuLuLkrgABgCGXZ2wik5uty+oBvNirI6mkzhAf4Gsb58Hcm67Jzd+KwD10BYPLL3e0MjvKrgAULnOfveF/O4N2Xb9BZom3gJes3F9X5Zze8/6Yt09b4CrqsEjUv8oFBaR2rl+6CZr2xVrp24o/WitBKuGrrpl1+bFkmK2qXTON4VpbdfLa7o7y/WdLxG7lm2Lqh2clOwTegbvc/vj2U78CwhA87Bn8G5Nk3eOb0Nsr9flz3sG78UUtue4kpv1xvjg3TMay62BMlTlP+vrOMnJsRmt/ze0jsfkPPYdAH57hK+34PeOyc8XIXu5xT2HsUkdZz+adwg8HGFfQ3K5jtDvbUiO4Di9/ywHGrL88pDizZ++oTp+an+SMX/ndymUCwmHMdO7yuOx83pUx/eEMU0AvxWndwgidAqOZ8ypCwdEfvvEo6D9HwpA8wzvmOJEqAg9ySu8g4x0Hb9hSB/BANEKJ+LbPBU0lzbAJs4xt1AoshKkUGQmiH8/jJ0gdhTTLmSegHlPE0oOdXALnqDjKYh3px//fSgSWG8UqfrrIICzYYSJXRr9BSPbpNzw7gBjKjKOYI7ReIGqQRIap5+5MdjyvuDkExvGeXSlONWZAP3/AZBwJohU7QJRGU+cTVH18ELmRPNBmibW6MT/k1b0XhdkRBvyT6SB6EYv/GvhSmRNpGngRULsAlxMCGNXp7w3FfdEbTEEDdLI9TdIKRUzUesa3I461ER8cpNT7gMRhpKmYVS9ELOgCUQsa4SsulciKiLbY+AnHD8cpuhISsnxpamI84sbDq9qYJgf8wiiOBrC7Ml7M7ZECCqKoiiKoiiKoiiKoijv5AvJxlZRyNWWLwAAAABJRU5ErkJggg==">
+
+    </nav>
+
+    <h1>Google</h1>
+
+    <form>
+
+        <i class="bx bx-search"></i>
+
+        <input type="text" placeholder="Search Google or type a URL">
+
+        <i class='bx bxs-microphone'></i>
+
+        <i class='bx bxs-camera'></i>
+
+    </form>
+
+</body>
+
+</html>

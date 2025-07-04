@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iPhone 16 Simulator</title>
+    <style>
+        body {
+            background-color: #f4f7fc;
+            /* Aggiunta di un colore di sfondo più vivace */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+        }
+
+        /* iPhone Frame */
+        .iphone {
+            width: 320px;
+            /* Più piccolo */
+            height: 640px;
+            /* Più piccolo */
+            background: #fff;
+            border-radius: 40px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .screen {
+            flex: 1;
+            background: linear-gradient(135deg, #6e7dff, #00c6ff);
+            /* Gradient di colore vivace */
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.3rem;
+            text-align: center;
+            padding: 20px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            opacity: 1;
+        }
+
+        .bottom-bar {
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            background: #fff;
+            border-top: 1px solid #ddd;
+        }
+
+        .icon {
+            width: 45px;
+            height: 45px;
+            background: #ff6f61;
+            /* Colore vivace per le icone */
+            border-radius: 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .icon:hover {
+            background: #ff4b3e;
+            /* Colore più scuro durante il passaggio del mouse */
+        }
+
+        .icon:active {
+            background: #d94431;
+            /* Colore ancora più scuro quando cliccato */
+        }
+
+        .home-button {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 6px;
+            background: #333;
+            border-radius: 15px;
+        }
+
+        /* App Containers */
+        .app {
+            display: none;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .app-container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            padding: 10px;
+        }
+
+        .app-header {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            color: #333;
+        }
+
+        .app-content {
+            font-size: 1.2rem;
+            color: #444;
+        }
+
+        .app-icons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .app-icons div {
+            width: 55px;
+            height: 55px;
+            background: #ff6f61;
+            border-radius: 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.8rem;
+            color: white;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .app-icons div:hover {
+            background: #ff4b3e;
+        }
+
+        /* Buttons style for back to home */
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin-top: 20px;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+            }
+
+            100% {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="iphone">
+        <div class="screen" id="screen">
+            Welcome to iPhone 16
+        </div>
+
+        <div class="bottom-bar">
+            <div class="icon" onclick="openApp('phone')">📞</div>
+            <div class="icon" onclick="openApp('messages')">💬</div>
+            <div class="icon" onclick="openApp('camera')">📷</div>
+            <div class="icon" onclick="openApp('settings')">⚙️</div>
+        </div>
+
+        <div class="home-button"></div>
+    </div>
+
+    <!-- Apps -->
+    <div class="app phone-app">
+        <div class="app-container">
+            <div class="app-header">Phone</div>
+            <div class="app-content">Dialing...</div>
+            <button onclick="closeApp()">Back to Home</button>
+        </div>
+    </div>
+
+    <div class="app messages-app">
+        <div class="app-container">
+            <div class="app-header">Messages</div>
+            <div class="app-content">
+                <div class="app-icons">
+                    <div onclick="openMessageApp('contacts')">👤</div>
+                    <div onclick="openMessageApp('new')">✉️</div>
+                    <div onclick="openMessageApp('send')">📤</div>
+                </div>
+            </div>
+            <button onclick="closeApp()">Back to Home</button>
+        </div>
+    </div>
+
+    <div class="app camera-app">
+        <div class="app-container">
+            <div class="app-header">Camera</div>
+            <div class="app-content">
+                <button onclick="playCameraSound()">Click Photo</button>
+                <div>Opening Camera...</div>
+            </div>
+            <button onclick="closeApp()">Back to Home</button>
+        </div>
+    </div>
+
+    <div class="app settings-app">
+        <div class="app-container">
+            <div class="app-header">Settings</div>
+            <div class="app-content">Opening Settings...</div>
+            <button onclick="closeApp()">Back to Home</button>
+        </div>
+    </div>
+
+    <script>
+        // Function to open apps
+        function openApp(app) {
+            // Hide all apps
+            document.querySelectorAll('.app').forEach((el) => {
+                el.classList.remove('active');
+            });
+
+            // Show selected app
+            document.querySelector(`.${app}-app`).classList.add('active');
+            // Change screen text
+            document.getElementById('screen').textContent = `Opening ${capitalizeFirstLetter(app)}...`;
+        }
+
+        // Function to close app and return to home screen
+        function closeApp() {
+            // Hide all apps
+            document.querySelectorAll('.app').forEach((el) => {
+                el.classList.remove('active');
+            });
+            // Change screen text back to the main screen
+            document.getElementById('screen').textContent = 'Welcome to iPhone 16';
+        }
+
+        // Function for Messages App with options
+        function openMessageApp(option) {
+            document.getElementById('screen').textContent = `Message ${capitalizeFirstLetter(option)} opened!`;
+        }
+
+        // Capitalize the first letter of the app name
+        function capitalizeFirstLetter(string) {
+            return string.charAt(0).toUpperCase() + string.slice(1);
+        }
+
+        // Play Camera Click Sound
+        function playCameraSound() {
+            const audio = new Audio('camera-click.mp3'); // Assicurati di avere un suono 'camera-click.mp3'
+            audio.play();
+            document.getElementById('screen').textContent = 'Photo Taken!';
+        }
+    </script>
+
+</body>
+
+</html>

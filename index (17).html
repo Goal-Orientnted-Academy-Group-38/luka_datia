@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Message Spark</title>
+    <meta name="description" content="Lovable Generated Project" />
+    <meta name="author" content="Lovable" />
+
+    <meta property="og:title" content="message-spark-social" />
+    <meta property="og:description" content="Lovable Generated Project" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@lovable_dev" />
+    <meta name="twitter:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
+
+    <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #F0F2F5;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            display: flex;
+            width: 95%;
+            height: 90vh;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border-radius: 24px;
+            overflow: hidden;
+        }
+
+        .contacts {
+            background-color: white;
+            width: 30%;
+            height: 100%;
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid #E4E6EB;
+        }
+
+        .contacts-header {
+            background-image: linear-gradient(to right, #6366F1, #8B5CF6);
+            padding: 24px 20px 48px 20px;
+            border-top-left-radius: 24px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .contacts-header h1 {
+            color: white;
+            font-size: 26px;
+            margin-bottom: 16px;
+            font-weight: 600;
+        }
+
+        .search-container {
+            position: relative;
+        }
+
+        .search-container i {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #65676B;
+            font-size: 18px;
+        }
+
+        .search {
+            width: 100%;
+            padding: 12px 12px 12px 42px;
+            background-color: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(4px);
+            border: none;
+            border-radius: 24px;
+            color: white;
+            font-size: 15px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .search::placeholder {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .search:focus {
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .contacts-list {
+            padding: 0 10px;
+            margin-top: -20px;
+            flex: 1;
+            overflow-y: auto;
+            z-index: 2;
+        }
+
+        .contact {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            margin-bottom: 4px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .contact:hover {
+            background-color: #F2F3F5;
+        }
+
+        .selected-contact {
+            background-color: rgba(99, 102, 241, 0.1);
+        }
+
+        .selected-contact:hover {
+            background-color: rgba(99, 102, 241, 0.15);
+        }
+
+        .avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 12px;
+            border: 2px solid white;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .contact-info {
+            flex: 1;
+        }
+
+        .contact h2 {
+            font-size: 16px;
+            font-weight: 600;
+            color: #050505;
+            margin-bottom: 2px;
+        }
+
+        .contact p {
+            font-size: 14px;
+            color: #65676B;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 200px;
+        }
+
+        .online-indicator {
+            width: 14px;
+            height: 14px;
+            background-color: #31A24C;
+            border: 2px solid white;
+            border-radius: 50%;
+            position: absolute;
+            bottom: 12px;
+            left: 44px;
+        }
+
+        .chat-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background-color: white;
+            position: relative;
+        }
+
+        .chat-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 20px;
+            background-color: white;
+            border-bottom: 1px solid #E4E6EB;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+        }
+
+        .user-info img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 12px;
+            object-fit: cover;
+        }
+
+        .user-details h2 {
+            font-size: 16px;
+            font-weight: 600;
+            color: #050505;
+        }
+
+        .user-details p {
+            font-size: 13px;
+            color: #65676B;
+        }
+
+        .chat-actions {
+            display: flex;
+            gap: 16px;
+        }
+
+        .action-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: #6366F1;
+        }
+
+        .action-button:hover {
+            background-color: #F2F3F5;
+        }
+
+        .action-button i {
+            font-size: 20px;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background-color: #F0F2F5;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .message {
+            max-width: 65%;
+            margin-bottom: 10px;
+            padding: 12px 16px;
+            border-radius: 18px;
+            position: relative;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .received {
+            align-self: flex-start;
+            background-color: #E4E6EB;
+            color: #050505;
+            border-bottom-left-radius: 6px;
+        }
+
+        .sent {
+            align-self: flex-end;
+            background-color: #6366F1;
+            color: white;
+            border-bottom-right-radius: 6px;
+        }
+
+        .chat-input {
+            padding: 16px 20px;
+            background-color: white;
+            border-top: 1px solid #E4E6EB;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .input-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .input-action {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: #6366F1;
+        }
+
+        .input-action:hover {
+            background-color: #F2F3F5;
+        }
+
+        .input-action i {
+            font-size: 20px;
+        }
+
+        .message-input {
+            flex: 1;
+            background-color: #F0F2F5;
+            border: none;
+            border-radius: 24px;
+            padding: 10px 16px;
+            font-size: 15px;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+
+        .message-input:focus {
+            background-color: #E4E6EB;
+        }
+
+        .send-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: #6366F1;
+        }
+
+        .emoji-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: #6366F1;
+            position: relative;
+        }
+
+        .emoji-picker {
+            position: absolute;
+            bottom: 50px;
+            right: -40px;
+            background-color: white;
+            border-radius: 16px;
+            width: 320px;
+            padding: 12px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.15);
+            z-index: 100;
+            display: none;
+            animation: scaleIn 0.2s ease;
+        }
+
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .emoji-header {
+            display: flex;
+            justify-content: space-between;
+            padding-bottom: 8px;
+            margin-bottom: 8px;
+            border-bottom: 1px solid #E4E6EB;
+        }
+
+        .emoji-header h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: #050505;
+        }
+
+        .emoji-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 8px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .emoji-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            font-size: 20px;
+        }
+
+        .emoji-item:hover {
+            background-color: #F2F3F5;
+            transform: scale(1.1);
+        }
+
+        /* Media Queries for Responsive Layout */
+        @media (max-width: 900px) {
+            .container {
+                width: 100%;
+                height: 100vh;
+                border-radius: 0;
+            }
+
+            .contacts {
+                width: 40%;
+            }
+
+            .contact p {
+                max-width: 150px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .contacts {
+                position: absolute;
+                left: 0;
+                width: 80%;
+                z-index: 10;
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+                height: 100%;
+            }
+
+            .contacts.show {
+                transform: translateX(0);
+            }
+
+            .chat-container {
+                width: 100%;
+            }
+
+            .mobile-menu {
+                display: block;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- Contacts Section -->
+        <div class="contacts" id="contactsPanel">
+            <div class="contacts-header">
+                <h1>საუბრები</h1>
+                <div class="search-container">
+                    <i class='bx bx-search'></i>
+                    <input type="text" class="search" placeholder="Messenger-ში მოძიება" id="searchInput">
+                </div>
+            </div>
+
+            <div class="contacts-list" id="contactsList">
+                <!-- Contacts will be dynamically added here -->
+            </div>
+        </div>
+
+        <!-- Chat Section -->
+        <div class="chat-container">
+            <div class="chat-header">
+                <div class="user-info">
+                    <img src="" id="selectedContactAvatar" alt="Contact">
+                    <div class="user-details">
+                        <h2 id="selectedContactName"></h2>
+                        <p id="selectedContactStatus">აქტიური იყო 25 წთ-ის წინ.</p>
+                    </div>
+                </div>
+
+                <div class="chat-actions">
+                    <div class="action-button">
+                        <i class='bx bxs-phone'></i>
+                    </div>
+                    <div class="action-button">
+                        <i class='bx bxs-video'></i>
+                    </div>
+                    <div class="action-button">
+                        <i class='bx bx-dots-horizontal-rounded'></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chat-messages" id="chatMessages">
+                <!-- Messages will be dynamically added here -->
+            </div>
+
+            <div class="chat-input">
+                <div class="input-actions">
+                    <div class="input-action">
+                        <i class='bx bxs-plus-circle'></i>
+                    </div>
+                    <div class="input-action">
+                        <i class='bx bxs-image'></i>
+                    </div>
+                    <div class="input-action">
+                        <i class='bx bxs-microphone'></i>
+                    </div>
+                </div>
+
+                <input type="text" class="message-input" id="messageInput" placeholder="Aa">
+
+                <div class="emoji-button" id="emojiButton">
+                    <i class='bx bxs-smile'></i>
+
+                    <div class="emoji-picker" id="emojiPicker">
+                        <div class="emoji-header">
+                            <h3>ემოჯები</h3>
+                        </div>
+                        <div class="emoji-grid" id="emojiGrid">
+                            <!-- Emojis will be dynamically added here -->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="send-button" id="sendButton">
+                    <i class='bx bxs-paper-plane'></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- IMPORTANT: DO NOT REMOVE THIS SCRIPT TAG OR THIS VERY COMMENT! -->
+    <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
+
+    <script>
+        // Mock data for contacts
+        const contacts = [
+            {
+                id: 1,
+                name: "ჯემალა",
+                lastMessage: "აუ გუშინ ლიმონათმა მაგრა გაასწორა.",
+                avatar: "https://nove25.kleecks-cdn.com/img/cms/custom%20gallery/2023/tonyboy_1_2.jpg",
+                isOnline: true,
+                messages: [
+                    { text: "გამარჯობა როგორ ხარ?", isSent: false },
+                    { text: "კარგად შენ?", isSent: true },
+                    { text: "მეც კარგად", isSent: false },
+                    { text: "აუ გუშინ ლიმონათმა მაგრა გაასწორა", isSent: false }
+                ]
+            },
+            {
+                id: 2,
+                name: "დედა",
+                lastMessage: "მოეწუწე სახლში დროზე.",
+                avatar: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR7YnoGQbjU8M0VYO3nEgy2IK6Q2Z47zMeXeQ&s",
+                isOnline: false,
+                messages: [
+                    { text: "სად ხარ", isSent: false },
+                    { text: "თაკოსთან", isSent: true },
+                    { text: "რაგინდა მანდ", isSent: false },
+                    { text: "დაბადების დღე აქ", isSent: true },
+                    { text: "დროზე ეხლა წამოდი მადედან", isSent: false },
+                    { text: "აუ წამოვალ ცოტა ხანში რაა", isSent: true },
+                    { text: "მოეწუწე სახლში დროზე", isSent: false }
+                ]
+            },
+            {
+                id: 3,
+                name: "მამა",
+                lastMessage: "მამი მარკეტიდან რა წამოგიღო?",
+                avatar: "https://easy-peasy.ai/cdn-cgi/image/quality=80,format=auto,width=700/https://media.easy-peasy.ai/c4e08960-42c9-42f5-b09d-b5c64cf4c52c/b08d3101-cc47-4521-b07c-b32b29ed5c4c.png",
+                isOnline: false,
+                messages: [
+                    { text: "მამი", isSent: false },
+                    { text: "ჰო", isSent: true },
+                    { text: "მარკეტში მივდივარ", isSent: false },
+                    { text: "მამი მარკეტიდან რა წამოგიღო?", isSent: false }
+                ]
+            },
+            {
+                id: 4,
+                name: "გელა",
+                lastMessage: "რავა ხარ ჯო?",
+                avatar: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTvH6TmR_sENvm0kNPfE6HK8xC17AOzeJmTjw&s",
+                isOnline: true,
+                messages: [
+                    { text: "რავა ხარ ჯო?", isSent: false }
+                ]
+            },
+            {
+                id: 5,
+                name: "უცნობი",
+                lastMessage: "გამარჯობა, Cristiano Ronaldo ვარ და მანქანა გამიფუჭდა და 500$ მჭირდება. გთხოვ ჩამირიცხე!",
+                avatar: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Question_mark_%28black%29.svg/800px-Question_mark_%28black%29.svg.png",
+                isOnline: true,
+                messages: [
+                    { text: "გამარჯობა", isSent: false },
+                    { text: "Cristiano Ronaldo ვარ", isSent: false },
+                    { text: "მანქანა გამიფუჭდა და 500$ მჭირდება", isSent: false },
+                    { text: "გთხოვ ჩამირიცხე!", isSent: false }
+                ]
+            },
+            {
+                id: 6,
+                name: "TecnoBoom",
+                lastMessage: "შეიძინეთ საოჯახო ტექნიკა მხოლოდ ჩვეენთან 45% - იანი ფასდაკლებით",
+                avatar: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRUAX8KxINtwLT4EjMvvfY1qGH_ngFOLa_bffHixSIygjaXDboWkrZGdfU_0gQBv1elcr4&usqp=CAU",
+                isOnline: false,
+                messages: [
+                    { text: "შეიძინეთ საოჯახო ტექნიკა მხოლოდ ჩვეენთან 45% - იანი ფასდაკლებით", isSent: false }
+                ]
+            }
+        ];
+
+        // Emojis array
+        const emojis = [
+            '🙂', '😁', '😂', '😉', '😊', '😋', '😎', '😍',
+            '😘', '🥰', '😗', '😙', '🥲', '🤔', '🤩', '🥳',
+            '😚', '😏', '😪', '😴', '🥱', '😡', '😷', '🤒',
+            '🤕', '🤢', '😇', '🤡', '🥸', '🥳', '❤️', '🩵',
+            '💚', '🧡', '👍🏻', '👎🏻'
+        ];
+
+        let selectedContact = null;
+
+        // DOM Elements
+        const contactsList = document.getElementById('contactsList');
+        const searchInput = document.getElementById('searchInput');
+        const selectedContactName = document.getElementById('selectedContactName');
+        const selectedContactAvatar = document.getElementById('selectedContactAvatar');
+        const selectedContactStatus = document.getElementById('selectedContactStatus');
+        const chatMessages = document.getElementById('chatMessages');
+        const messageInput = document.getElementById('messageInput');
+        const sendButton = document.getElementById('sendButton');
+        const emojiButton = document.getElementById('emojiButton');
+        const emojiPicker = document.getElementById('emojiPicker');
+        const emojiGrid = document.getElementById('emojiGrid');
+
+        // Initialize the UI
+        function initializeUI() {
+            // Populate contacts
+            renderContacts();
+
+            // Populate emoji grid
+            renderEmojiGrid();
+
+            // Initialize event listeners
+            initializeEventListeners();
+
+            // Select the first contact by default
+            selectContact(contacts[1]); // Select "დედა" by default (index 1)
+        }
+
+        // Render contacts in the contacts list
+        function renderContacts(searchTerm = '') {
+            contactsList.innerHTML = '';
+
+            const filteredContacts = searchTerm ?
+                contacts.filter(contact => contact.name.toLowerCase().includes(searchTerm.toLowerCase())) :
+                contacts;
+
+            filteredContacts.forEach(contact => {
+                const contactElement = document.createElement('div');
+                contactElement.className = `contact ${selectedContact && contact.id === selectedContact.id ? 'selected-contact' : ''}`;
+
+                const isOnlineElement = contact.isOnline ? '<div class="online-indicator"></div>' : '';
+
+                contactElement.innerHTML = `
+                    <img src="${contact.avatar}" alt="${contact.name}" class="avatar">
+                    ${isOnlineElement}
+                    <div class="contact-info">
+                        <h2>${contact.name}</h2>
+                        <p>${contact.lastMessage}</p>
+                    </div>
+                `;
+
+                contactElement.addEventListener('click', () => selectContact(contact));
+                contactsList.appendChild(contactElement);
+            });
+        }
+
+        // Select a contact and display their messages
+        function selectContact(contact) {
+            selectedContact = contact;
+
+            // Update UI
+            selectedContactName.textContent = contact.name;
+            selectedContactAvatar.src = contact.avatar;
+            selectedContactStatus.textContent = contact.isOnline ? 'აქტიურია ახლა' : 'აქტიური იყო 25 წთ-ის წინ.';
+
+            // Highlight selected contact
+            const contactElements = document.querySelectorAll('.contact');
+            contactElements.forEach(elem => {
+                elem.classList.remove('selected-contact');
+            });
+
+            const selectedElem = Array.from(contactElements).find(
+                elem => elem.querySelector('h2').textContent === contact.name
+            );
+
+            if (selectedElem) {
+                selectedElem.classList.add('selected-contact');
+            }
+
+            // Display messages
+            renderMessages(contact.messages);
+        }
+
+        // Render messages in the chat window
+        function renderMessages(messages) {
+            chatMessages.innerHTML = '';
+
+            messages.forEach(message => {
+                const messageElement = document.createElement('div');
+                messageElement.className = `message ${message.isSent ? 'sent' : 'received'}`;
+                messageElement.innerHTML = `<p>${message.text}</p>`;
+                chatMessages.appendChild(messageElement);
+            });
+
+            // Scroll to bottom of messages
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        // Render emoji grid
+        function renderEmojiGrid() {
+            emojiGrid.innerHTML = '';
+
+            emojis.forEach(emoji => {
+                const emojiElement = document.createElement('div');
+                emojiElement.className = 'emoji-item';
+                emojiElement.textContent = emoji;
+                emojiElement.addEventListener('click', () => {
+                    messageInput.value += emoji;
+                    toggleEmojiPicker(false);
+                    messageInput.focus();
+                });
+
+                emojiGrid.appendChild(emojiElement);
+            });
+        }
+
+        // Toggle emoji picker visibility
+        function toggleEmojiPicker(show) {
+            emojiPicker.style.display = show ? 'block' : 'none';
+        }
+
+        // Send message
+        function sendMessage() {
+            const text = messageInput.value.trim();
+
+            if (text && selectedContact) {
+                // Add to messages array
+                const newMessage = { text, isSent: true };
+                selectedContact.messages.push(newMessage);
+
+                // Add to UI
+                const messageElement = document.createElement('div');
+                messageElement.className = 'message sent';
+                messageElement.innerHTML = `<p>${text}</p>`;
+                chatMessages.appendChild(messageElement);
+
+                // Clear input
+                messageInput.value = '';
+
+                // Scroll to bottom
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+
+                // Simulate reply after delay (just for demo)
+                setTimeout(() => {
+                    if (Math.random() > 0.5) {
+                        const replies = [
+                            "კარგი", "დეემორჩილე დედას!", "გელოდები", "👍", "😂", "🙂"
+                        ];
+                        const reply = replies[Math.floor(Math.random() * replies.length)];
+
+                        // Add to messages array
+                        const replyMessage = { text: reply, isSent: false };
+                        selectedContact.messages.push(replyMessage);
+
+                        // Add to UI
+                        const replyElement = document.createElement('div');
+                        replyElement.className = 'message received';
+                        replyElement.innerHTML = `<p>${reply}</p>`;
+                        chatMessages.appendChild(replyElement);
+
+                        // Update last message
+                        selectedContact.lastMessage = reply;
+                        renderContacts();
+
+                        // Scroll to bottom
+                        chatMessages.scrollTop = chatMessages.scrollHeight;
+                    }
+                }, 1000 + Math.random() * 2000);
+            }
+        }
+
+        // Initialize event listeners
+        function initializeEventListeners() {
+            // Search input
+            searchInput.addEventListener('input', (e) => {
+                renderContacts(e.target.value);
+            });
+
+            // Send button
+            sendButton.addEventListener('click', sendMessage);
+
+            // Message input (send on Enter)
+            messageInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    sendMessage();
+                }
+            });
+
+            // Emoji button
+            emojiButton.addEventListener('click', () => {
+                const isVisible = emojiPicker.style.display === 'block';
+                toggleEmojiPicker(!isVisible);
+            });
+
+            // Close emoji picker when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!emojiButton.contains(e.target) && !emojiPicker.contains(e.target)) {
+                    toggleEmojiPicker(false);
+                }
+            });
+        }
+
+        // Initialize the application
+        window.onload = initializeUI;
+    </script>
+</body>
+
+</html>

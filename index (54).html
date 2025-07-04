@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #f {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        #bg {
+            z-index: -1;
+            height: 1200px;
+            width: 1200px;
+            background-image: linear-gradient(40deg,
+                    #0c0c10 30%,
+                    #1e2028 55%,
+                    #0c0c10 75%);
+            position: absolute;
+            filter: blur(30px);
+        }
+
+        .grid {
+            height: 1200px;
+            width: 1200px;
+            background-image: linear-gradient(to right, #23201c 1px, transparent 1px),
+                linear-gradient(to bottom, #23201c 1px, transparent 1px);
+            background-size: 8px 8px;
+            background-position: center center;
+            position: absolute;
+            filter: blur(1px);
+        }
+
+        #bgglow {
+            height: 300px;
+            width: 400px;
+            filter: blur(100px);
+            opacity: 0.3;
+            background: #8d7330;
+            visibility: hidden;
+            animation: blink 4s infinite;
+        }
+
+        .button {
+            cursor: pointer;
+            width: 310px;
+            height: 90px;
+            font-size: 32px;
+            border-radius: 20px;
+            border: none;
+            margin: 3px;
+            background: linear-gradient(180deg, #f8a942, #e9a545);
+            font-weight: 600;
+        }
+
+        .button:active {
+            scale: 0.98;
+        }
+
+        .unfocus-overlay:active+.button {
+            scale: 0;
+        }
+
+        button:focus+.unfocus-overlay,
+        .unfocus-overlay:active {
+            display: block;
+            /* Show the overlay when button is focused */
+        }
+
+        .unfocus-overlay {
+            display: none;
+            position: absolute;
+            inset: 0;
+            /* Cover the entire button */
+            background: transparent;
+            z-index: 3;
+            /* Put it above the button */
+        }
+
+        #f:focus-within:not(:has(:active))>.svg .svgg .osvganim,
+        #f:focus-within:not(:has(:active))>.svg .svgg .osvganim2,
+        #f:focus-within:not(:has(:active))>.svg .svgg .osvganim3 {
+            animation: draw 1.5s linear forwards;
+        }
+
+        #f:has(:active)>#main-border-border #main-border #border .button {
+            scale: 0.96;
+        }
+
+        #f:has(:active)>#main-border-border #main-border #outerglow,
+        #f:has(:active)>#main-border-border #main-border,
+        #f:has(:active)>#bgglow,
+        #f:has(:active)>.img {
+            animation: none;
+            filter: saturate(0) brightness(0.5);
+        }
+
+        .button:focus:not(:active)>#text {
+            animation: shake 0.5s ease-in-out forwards;
+        }
+
+        #border {
+            background: #cdb466;
+            border-radius: 23px;
+        }
+
+        #main-border {
+            padding: 8px;
+            background: #1a1509;
+            border-radius: 31px;
+            position: relative;
+            margin: 2px;
+            box-shadow: 0px 20px 20px 0px #0c090299;
+            animation: blink2 4s infinite;
+        }
+
+        #main-border-border {
+            background: linear-gradient(140deg, transparent 65%, #696045);
+            border-radius: 31px;
+        }
+
+        #text {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .glow {
+            width: 280px;
+            position: absolute;
+            height: 60px;
+            background: #fbdf8e;
+            filter: blur(12px);
+        }
+
+        #textglow {
+            opacity: 0.6;
+            height: 25px;
+            top: 0px;
+        }
+
+        #innerglow {
+            z-index: -1;
+        }
+
+        #outerglow {
+            width: 280px;
+            left: 25px;
+            top: 10px;
+            height: 20px;
+            filter: blur(25px);
+            animation: blink 4s infinite;
+            visibility: hidden;
+        }
+
+        .svg {
+            position: absolute;
+            filter: blur(1px);
+            padding-top: 170px;
+            mask-image: radial-gradient(circle at 50% 35%, black 45%, transparent 60%);
+            pointer-events: none;
+        }
+
+        #bottomrightimg {
+            bottom: -3px;
+            right: 0px;
+            margin-right: 30px;
+            transform-origin: 0px 100%;
+            width: 30%;
+            background-size: contain;
+            aspect-ratio: 24/13.2;
+        }
+
+        #topleftimg {
+            top: -3px;
+            left: 0px;
+            aspect-ratio: 20/24;
+            width: 30%;
+            background-size: contain;
+            background-image: url("data:image/png;base64,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");
+        }
+
+        .img {
+            animation: blink2 4s infinite;
+            pointer-events: none;
+
+            z-index: 2;
+            position: absolute;
+            background-repeat: no-repeat;
+            background-image: url("data:image/png;base64,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");
+        }
+
+        #f:focus-within:not(:has(:active))>#main-border-border #main-border #outerglow,
+        #f:focus-within:not(:has(:active))>#main-border-border #main-border,
+        #f:focus-within:not(:has(:active))>#bgglow,
+        #f:focus-within:not(:has(:active))>.img {
+            animation: none;
+            visibility: visible;
+        }
+
+        .svganim {
+            stroke: #444;
+        }
+
+        .svganim2 {
+            stroke: #444;
+        }
+
+        .svganim3 {
+            stroke: #444;
+        }
+
+        .osvganim {
+            stroke: #d39e45;
+            stroke-dasharray: 600;
+            stroke-dashoffset: 400;
+        }
+
+        .osvganim2 {
+            stroke: #d39e45;
+            stroke-dasharray: 300;
+            stroke-dashoffset: 200;
+        }
+
+        .osvganim3 {
+            stroke: #d39e45;
+            stroke-dasharray: 300;
+            stroke-dashoffset: -200;
+        }
+
+        @keyframes draw {
+            to {
+                stroke-dashoffset: 0;
+            }
+        }
+
+        @keyframes blink {
+            0% {
+                visibility: hidden;
+            }
+
+            38% {
+                visibility: hidden;
+            }
+
+            40% {
+                visibility: visible;
+            }
+
+            41% {
+                visibility: hidden;
+            }
+
+            43% {
+                visibility: hidden;
+            }
+
+            45% {
+                visibility: visible;
+            }
+
+            47% {
+                visibility: hidden;
+            }
+
+            78% {
+                visibility: hidden;
+            }
+
+            80% {
+                visibility: visible;
+            }
+
+            81% {
+                visibility: hidden;
+            }
+
+            100% {
+                visibility: hidden;
+            }
+        }
+
+        @keyframes blink2 {
+            0% {
+                filter: saturate(0) brightness(0.5);
+            }
+
+            38% {
+                filter: saturate(0) brightness(0.5);
+            }
+
+            40% {
+                filter: saturate(1) brightness(1);
+            }
+
+            41% {
+                filter: saturate(0) brightness(0.5);
+            }
+
+            43% {
+                filter: saturate(0) brightness(0.5);
+            }
+
+            45% {
+                filter: saturate(1) brightness(1);
+            }
+
+            47% {
+                filter: saturate(0) brightness(0.5);
+            }
+
+            78% {
+                filter: saturate(0) brightness(0.5);
+            }
+
+            80% {
+                filter: saturate(1) brightness(1);
+            }
+
+            82% {
+                filter: saturate(0) brightness(0.5);
+            }
+
+            100% {
+                filter: saturate(0) brightness(0.5);
+            }
+        }
+
+        @keyframes shake {
+            0% {
+                transform: translateX(0);
+            }
+
+            25% {
+                transform: translateX(-10px);
+            }
+
+            50% {
+                transform: translateX(10px);
+            }
+
+            75% {
+                transform: translateX(-10px);
+            }
+
+            100% {
+                transform: translateX(0);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="bg"></div>
+
+    <div class="grid"></div>
+
+    <div id="f">
+        <div class="img" id="topleftimg"></div>
+        <div class="img" id="bottomrightimg"></div>
+        <div class="glow" id="bgglow"></div>
+        <div class="svg">
+            <svg height="200" width="600" viewBox="0 0 500 600" fill="none">
+                <path filter="url(#blur)" stroke-miterlimit="10" stroke-width="3" d="M80,0l0,370l-120,60l0,200"
+                    class="svganim"></path>
+                <path filter="url(#blur)" stroke-miterlimit="10" stroke-width="3" d="M150,0l0,600" class="svganim">
+                </path>
+                <path stroke-miterlimit="10" stroke-width="3" d="M220,0l0,600" class="svganim"></path>
+                <path filter="url(#blur)" stroke-miterlimit="10" stroke-width="3" d="M280,0l0,350l-60,100l0,200"
+                    class="svganim"></path>
+
+                <path filter="url(#blur)" stroke-miterlimit="10" stroke-width="3" d="M340,0l0,380l60,100l0,200"
+                    class="svganim"></path>
+                <path filter="url(#blur)" stroke-miterlimit="10" stroke-width="3" d="M400,0l0,320l120,0l0,300"
+                    class="svganim"></path>
+                //right
+                <path filter="url(#blur)" stroke-miterlimit="10" stroke-width="6" d="M0,0l1220,0" class="svganim2">
+                </path>
+                <path filter="url(#blur)" stroke-miterlimit="10" stroke-width="4" d="M0,60l1300,0" class="svganim2">
+                </path>
+                <path filter="url(#blur)" stroke-miterlimit="10" stroke-width="4" d="M0,110l1280,0" class="svganim2">
+                </path>
+                //left
+                <path filter="url(#blur)" stroke-miterlimit="10" stroke-width="6" d="M-360,0l500,0" class="svganim3">
+                </path>
+                <path filter="url(#blur)" stroke-miterlimit="10" stroke-width="4" d="M-400,60l500,0" class="svganim3">
+                </path>
+                <path filter="url(#blur)" stroke-miterlimit="10" stroke-width="4" d="M-390,110l500,0" class="svganim3">
+                </path>
+            </svg>
+        </div>
+
+        <div class="svg">
+            <svg height="200" width="600" viewBox="0 0 500 600" fill="none" class="svgg">
+                <path filter="url(#blur)" stroke-miterlimit="10" stroke-width="3" d="M80,0l0,370l-120,60l0,200"
+                    class="osvganim"></path>
+                <path filter="url(#blur)" stroke-miterlimit="10" stroke-width="3" d="M150,0l0,600" class="osvganim">
+                </path>
+                <path stroke-miterlimit="10" stroke-width="3" d="M220,0l0,600" class="osvganim"></path>
+                <path filter="url(#blur)" stroke-miterlimit="10" stroke-width="3" d="M280,0l0,350l-60,100l0,200"
+                    class="osvganim"></path>
+
+                <path filter="url(#blur)" stroke-miterlimit="10" stroke-width="3" d="M340,0l0,380l60,100l0,200"
+                    class="osvganim"></path>
+                <path filter="url(#blur)" stroke-miterlimit="10" stroke-width="3" d="M400,0l0,320l120,0l0,300"
+                    class="osvganim"></path>
+                //right
+                <path filter="url(#blur)" stroke-miterlimit="10" stroke-width="6" d="M0,0l1220,0" class="osvganim2">
+                </path>
+                <path filter="url(#blur)" stroke-miterlimit="10" stroke-width="4" d="M0,60l1300,0" class="osvganim2">
+                </path>
+                <path filter="url(#blur)" stroke-miterlimit="10" stroke-width="4" d="M0,110l1280,0" class="osvganim2">
+                </path>
+                //left
+                <path filter="url(#blur)" stroke-miterlimit="10" stroke-width="6" d="M-360,0l500,0" class="osvganim3">
+                </path>
+                <path filter="url(#blur)" stroke-miterlimit="10" stroke-width="4" d="M-400,60l500,0" class="osvganim3">
+                </path>
+                <path filter="url(#blur)" stroke-miterlimit="10" stroke-width="4" d="M-390,110l500,0" class="osvganim3">
+                </path>
+            </svg>
+        </div>
+
+        <div id="main-border-border">
+            <div id="main-border">
+                <div class="glow" id="outerglow"></div>
+                <div id="border">
+                    <button class="button">
+                        <div id="text">
+                            <div class="glow" id="innerglow"></div>
+                            <div class="glow" id="textglow"></div>
+                            <div>Start Shipping</div>
+                            <svg height="34" width="30" preserveAspectRatio="none" fill="#000000" viewBox="5 2 11 17">
+                                <g stroke-width="0"></g>
+                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                <g id="SVGRepo_iconCarrier">
+                                    <path d="m6.5 7.5h4l-6 9v-6.997l-4-.003 6-9z" fill="#000" stroke="#000000"
+                                        stroke-linecap="round" stroke-linejoin="round" transform="translate(5 2)">
+                                    </path>
+                                </g>
+                            </svg>
+                        </div>
+                    </button>
+                    <div class="unfocus-overlay" tabindex="2"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

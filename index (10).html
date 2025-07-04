@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bottone Animato</title>
+    <style>
+        @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap");
+
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: #1a1a1a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .btn {
+            all: unset;
+            font-size: 24px;
+            padding: 14px 52px;
+            background: linear-gradient(45deg, #ff6347, #ff4500);
+            /* Gradiente iniziale */
+            color: white;
+            text-transform: uppercase;
+            position: relative;
+            cursor: pointer;
+            border-radius: 25px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, background 0.5s ease, box-shadow 0.3s ease;
+        }
+
+        .btn:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, #ff4500, #ff6347);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            border-radius: 25px;
+        }
+
+        .btn:hover {
+            transform: scale(1.1);
+            background: linear-gradient(45deg, #ff4500, #ff6347);
+            /* Gradiente durante hover */
+        }
+
+        .btn:hover:before {
+            opacity: 1;
+            /* Quando il mouse è sopra, il gradiente viene attivato */
+        }
+
+        .btn:active {
+            transform: scale(0.95);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+    </style>
+</head>
+
+<body>
+    <button class="btn">
+        <span>Click Me!</span>
+    </button>
+</body>
+
+</html>

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *,
+        *::after,
+        *:before {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            display: grid;
+            place-items: center;
+            min-height: 100vh;
+            background: #112;
+        }
+
+        .centered-canvas {
+            aspect-ratio: 1440 / 900;
+            display: block;
+            border-radius: 16px;
+            width: 90vw;
+            height: auto;
+        }
+
+        /* Styles for when in browser mode and the screen is wider than it is tall */
+        @media all and (display-mode: browser) and (orientation: landscape) {
+            .centered-canvas {
+                background: #330;
+            }
+        }
+
+        /* Styles for when in browser mode and the screen is wider than it is tall */
+        @media all and (display-mode: browser) and (orientation: portrait) {
+            .centered-canvas {
+                background: #303;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="canvas" class="centered-canvas" width="1440" height="900"></canvas>
+    <script type="fragment-shader" id="fragmentShader">
+precision highp float;
+uniform float time;
+uniform vec2 resolution;
+
+const float PI =  3.141592653589793;
+const float TAU = 6.283185307179586;
+const float DEG_90 = 1.5707963267948966; // 90 * PI / 180
+
+void main() {
+    vec2 uv = gl_FragCoord.xy;
+    float angle = PI * 2.0 * sin(time * 0.1);
+    float a = 200.0 + 100.0 * sin(angle * 0.25);
+    float k = uv.y / a;
+    float delta = 75.0 * sin(k + angle * 1.5) + 150.0 * cos(k + angle * 1.5);
+
+    vec3 finalColor = vec3(0);
+
+    for (int i = 0; i < 4; i++) {
+        float x1_js = sin(k + 3.0 * angle + float(i) * DEG_90) * 100.0;
+        float x2_js = sin(k + 3.0 * angle + mod(float(i + 1), 4.0) * DEG_90) * 100.0;
+
+        if (x1_js < x2_js) {
+            float current_x1_screen = x1_js + delta + (resolution.x / 2.0);
+            float current_x2_screen = x2_js + delta + (resolution.x / 2.0);
+
+            if (uv.x >= current_x1_screen && uv.x < current_x2_screen) {
+                float rb_val = (255.0 * ((x2_js - x1_js) / 130.0));
+                rb_val = clamp(rb_val, 0.0, 255.0);
+
+                if (mod(float(i), 2.0) == 0.0) { // If 'i' is even
+                    finalColor = vec3(rb_val / 255.0, 32.0 / 255.0, 0.0);
+                } else { // If 'i' is odd
+                    finalColor = vec3(0.0, 32.0 / 255.0, rb_val / 255.0);
+                }
+                break;
+            }
+        }
+    }
+    gl_FragColor = vec4(finalColor, 1.0);
+}
+</script>
+
+    <script>
+        const canvas = document.getElementById("canvas");
+        const w = canvas.width;
+        const h = canvas.height;
+        const ctx3d = getContext3d(canvas, fragmentShader.innerText);
+        document.body.onclick = (e) => document.body.requestFullscreen();
+
+        !(function animate(t = 0) {
+            ctx3d.update();
+            requestAnimationFrame(animate);
+        })(0);
+
+
+
+        function getContext3d(canvasObj, fragmentShaderScript, vertextShaderScript) {
+            this.context = canvasObj.getContext("webgl2");
+            const w = this.context.canvas.width;
+            const h = this.context.canvas.height;
+            this.context.bindBuffer(this.context.ARRAY_BUFFER, this.context.createBuffer());
+            this.context.bufferData(this.context.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, -1, 1, 1, -1, 1, 1]), this.context.STATIC_DRAW);
+            const program = this.context.createProgram();
+            const vshader = this.context.createShader(this.context.VERTEX_SHADER);
+            const fshader = this.context.createShader(this.context.FRAGMENT_SHADER);
+            this.context.shaderSource(vshader, vertextShaderScript || `precision mediump float;attribute vec2 a_texcoord; attribute vec2 a_position;varying vec2 v_texcoord;void main(){v_texcoord=a_texcoord;gl_Position = vec4(a_position, 0, 1);}`);
+            this.context.shaderSource(fshader, fragmentShaderScript);
+            this.context.compileShader(vshader);
+            this.context.compileShader(fshader);
+            this.context.attachShader(program, vshader);
+            this.context.attachShader(program, fshader);
+            this.context.linkProgram(program);
+            this.context.useProgram(program);
+            this.context.program = program;
+            const positionLocation = context.getAttribLocation(program, "a_position");
+            this.context.enableVertexAttribArray(positionLocation);
+            this.context.vertexAttribPointer(positionLocation, 2, context.FLOAT, false, 0, 0);
+            const texcoordLocation = context.getAttribLocation(program, "a_texcoord");
+            this.context.enableVertexAttribArray(texcoordLocation);
+            this.context.vertexAttribPointer(texcoordLocation, 2, context.FLOAT, false, 0, 0);
+            this.context.uniform2f(context.getUniformLocation(program, "resolution"), w, h);
+            this.context.viewport(0, 0, w, h);
+            this.context.setUiform2F = (name, val) => this.context.uniform2f(this.context.getUniformLocation(this.context.program, name), ...val);
+            this.context.update = (time = performance.now() * .001) => {
+                this.context.uniform1f(this.context.getUniformLocation(this.context.program, "time"), time);
+                context.drawArrays(this.context.TRIANGLES, 0, 6);
+            };
+            return context;
+        }
+    </script>
+
+</body>
+
+</html>

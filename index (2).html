@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Weather Animation</title>
+
+</head>
+
+<style>
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        height: 100vh;
+        background: linear-gradient(#87CEEB, #f39c12);
+        transition: background 1s ease-in-out;
+    }
+
+    .button-container {
+        position: relative;
+        width: 200px;
+        height: 200px;
+        background: radial-gradient(circle, #f39c12, #e67e22);
+        border-radius: 50%;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+        cursor: pointer;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 1.2rem;
+        color: white;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6);
+    }
+
+    .rainy {
+        background: radial-gradient(circle, #34495e, #2c3e50);
+        box-shadow: 0 0 20px rgba(0, 0, 255, 0.8);
+    }
+
+    .snowy {
+        background: radial-gradient(circle, #ecf0f1, #bdc3c7);
+        box-shadow: 0 0 20px rgba(173, 216, 230, 0.8);
+    }
+
+    .stormy {
+        background: radial-gradient(circle, #2c3e50, #7f8c8d);
+        box-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+    }
+
+    .weather-effect {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        pointer-events: none;
+        overflow: hidden;
+    }
+
+    .particle {
+        position: absolute;
+        width: 5px;
+        height: 5px;
+        background: white;
+        border-radius: 50%;
+        opacity: 0;
+        animation: animate-particles 3s infinite;
+    }
+
+    @keyframes animate-particles {
+        0% {
+            opacity: 0;
+            transform: translateY(0);
+        }
+
+        50% {
+            opacity: 1;
+            transform: translateY(50px);
+        }
+
+        100% {
+            opacity: 0;
+            transform: translateY(100px);
+        }
+    }
+
+    .weather-text {
+        font-size: 24px;
+        font-weight: bold;
+        margin-top: 20px;
+        color: #fff;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    }
+
+</style>
+
+<body>
+
+    <div id="weatherButton" class="button-container">
+
+        Change Weather
+
+        <div id="weatherEffect" class="weather-effect"></div>
+
+    </div>
+
+    <div id="weatherText" class="weather-text">Sunny</div>
+
+    <script>
+        
+        const body = document.body;
+
+        const button = document.getElementById('weatherButton');
+
+        const effectContainer = document.getElementById('weatherEffect');
+
+        const weatherText = document.getElementById('weatherText');
+
+        const weathers = ['sunny', 'rainy', 'snowy', 'stormy'];
+
+        let current = 0;
+
+        function clearParticles() {
+
+            effectContainer.innerHTML = '';
+
+        }
+
+        function createParticles(type) {
+
+            clearParticles();
+
+            const particleCount = type === 'snowy' ? 100 : type === 'rainy' ? 80 : 0;
+
+            for (let i = 0; i < particleCount; i++) {
+
+                const particle = document.createElement('div');
+
+                particle.classList.add('particle');
+
+                if (type === 'snowy') {
+
+                    particle.style.background = 'white';
+
+                    particle.style.width = '6px';
+
+                    particle.style.height = '6px';
+
+                } else if (type === 'rainy') {
+
+                    particle.style.background = 'rgba(173,216,230,0.7)';
+
+                    particle.style.width = '2px';
+
+                    particle.style.height = '15px';
+
+                }
+
+                particle.style.left = Math.random() * 100 + '%';
+
+                particle.style.top = Math.random() * -100 + 'px';
+
+                particle.style.animationDuration = 2 + Math.random() * 2 + 's';
+
+                particle.style.animationDelay = Math.random() * 2 + 's';
+
+                effectContainer.appendChild(particle);
+
+            }
+
+        }
+
+        function updateWeather(index) {
+
+            const weather = weathers[index];
+
+            button.className = 'button-container ' + weather;
+
+            weatherText.textContent = weather.charAt(0).toUpperCase() + weather.slice(1);
+
+            switch (weather) {
+
+                case 'sunny':
+
+                    body.style.background = 'linear-gradient(#87CEEB, #f39c12)';
+
+                    break;
+
+                case 'rainy':
+
+                    body.style.background = 'linear-gradient(#2c3e50, #34495e)';
+
+                    break;
+
+                case 'snowy':
+
+                    body.style.background = 'linear-gradient(#ecf0f1, #bdc3c7)';
+
+                    break;
+
+                case 'stormy':
+
+                    body.style.background = 'linear-gradient(#2c3e50, #7f8c8d)';
+
+                    break;
+
+            }
+
+            createParticles(weather);
+
+        }
+
+        button.addEventListener('click', () => {
+
+            current = (current + 1) % weathers.length;
+
+            updateWeather(current);
+
+        });
+
+        updateWeather(current);
+
+    </script>
+    
+</body>
+
+</html>

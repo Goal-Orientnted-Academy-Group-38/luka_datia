@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Interfaccia AI - Nuovo Stile</title>
+    <style>
+        /* Reset e setup base */
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #1a1a2e;
+            /* scuro ma diverso dal precedente */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #f0f0f0;
+        }
+
+        .container {
+            background: linear-gradient(135deg, #ff8a00, #e52e71);
+            border-radius: 20px;
+            width: 350px;
+            padding: 30px 25px;
+            box-shadow: 0 8px 25px rgba(229, 46, 113, 0.7);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        h1 {
+            margin: 0 0 20px;
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: #fff;
+            text-transform: lowercase;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+        }
+
+        input {
+            width: 100%;
+            padding: 14px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 35px;
+            outline: none;
+            background-color: #fff;
+            color: #333;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        input::placeholder {
+            color: #aaa;
+        }
+
+        input:focus {
+            box-shadow: 0 6px 20px #fff4e6;
+            transform: scale(1.05);
+        }
+
+        .response {
+            margin-top: 25px;
+            font-size: 18px;
+            font-style: normal;
+            color: #fff4e6;
+            text-shadow: 0 0 5px #ffb347;
+        }
+
+        /* Particelle decorative */
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.3;
+            background: radial-gradient(circle, #ffb347, #e52e71);
+            animation: drift 6s ease-in-out infinite;
+            filter: blur(1.5px);
+        }
+
+        /* Differenti dimensioni e posizioni */
+        .particle1 {
+            width: 12px;
+            height: 12px;
+            top: 15%;
+            left: 10%;
+            animation-duration: 5s;
+        }
+
+        .particle2 {
+            width: 20px;
+            height: 20px;
+            top: 60%;
+            left: 80%;
+            animation-duration: 7s;
+        }
+
+        .particle3 {
+            width: 8px;
+            height: 8px;
+            top: 40%;
+            left: 50%;
+            animation-duration: 6s;
+        }
+
+        @keyframes drift {
+
+            0%,
+            100% {
+                transform: translateY(0) translateX(0);
+                opacity: 0.3;
+            }
+
+            50% {
+                transform: translateY(-25px) translateX(15px);
+                opacity: 0.6;
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="container">
+        <h1>interfaccia ai</h1>
+        <input type="text" placeholder="Parla con l'AI..." />
+        <div class="response">"L'AI sta elaborando il tuo messaggio..."</div>
+
+        <!-- Particelle -->
+        <div class="particle particle1"></div>
+        <div class="particle particle2"></div>
+        <div class="particle particle3"></div>
+    </div>
+</body>
+
+</html>

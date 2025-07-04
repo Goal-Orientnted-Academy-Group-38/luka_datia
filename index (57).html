@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .progress-container {
+            width: 300px;
+            position: relative;
+        }
+
+        .dots-container {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+            z-index: 1;
+            position: relative;
+            top: -10px;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            background-color: white;
+            border-radius: 50%;
+        }
+
+        .cherry {
+            width: 15px;
+            height: 15px;
+            background-color: red;
+            border-radius: 50%;
+            animation: hideDot 0.5s 9.3s forwards;
+        }
+
+        .pacman {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: yellow;
+            position: absolute;
+            top: -20px;
+            left: -10px;
+            z-index: 2;
+            animation: movePacman 10s linear forwards;
+        }
+
+        .pacman-mouth {
+            width: 101%;
+            height: 100%;
+            clip-path: polygon(100% 74%, 44% 48%, 100% 21%);
+            background-color: #1a202c;
+            animation: eat 0.3s linear infinite;
+        }
+
+        .progress-bar {
+            height: 24px;
+            background-color: #2a4365;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 2px solid #fff;
+            padding: 6px;
+            position: relative;
+        }
+
+        .progress {
+            width: 0;
+            height: 100%;
+            background-color: #3182ce;
+            animation: fillProgress 10s linear forwards;
+            border-radius: 6px;
+        }
+
+        .progress-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-weight: bold;
+            z-index: 3;
+        }
+
+        .progress-text::after {
+            content: "0%";
+            animation: updateText 10s linear forwards;
+        }
+
+        @keyframes movePacman {
+            0% {
+                transform: translateX(0);
+            }
+
+            100% {
+                transform: translateX(285px);
+            }
+        }
+
+        @keyframes eat {
+
+            0%,
+            100% {
+                clip-path: polygon(100% 74%, 44% 48%, 100% 21%);
+            }
+
+            50% {
+                clip-path: polygon(100% 60%, 44% 48%, 100% 40%);
+            }
+        }
+
+        @keyframes fillProgress {
+            0% {
+                width: 0;
+            }
+
+            100% {
+                width: 100%;
+            }
+        }
+
+        @keyframes updateText {
+            0% {
+                content: "0%";
+            }
+
+            10% {
+                content: "10%";
+            }
+
+            20% {
+                content: "20%";
+            }
+
+            30% {
+                content: "30%";
+            }
+
+            40% {
+                content: "40%";
+            }
+
+            50% {
+                content: "50%";
+            }
+
+            60% {
+                content: "60%";
+            }
+
+            70% {
+                content: "70%";
+            }
+
+            80% {
+                content: "80%";
+            }
+
+            90% {
+                content: "90%";
+            }
+
+            100% {
+                content: "100%";
+            }
+        }
+
+        .dot:nth-child(1) {
+            animation: hideDot 0.5s 0.2s forwards;
+        }
+
+        .dot:nth-child(2) {
+            animation: hideDot 0.5s 0.5s forwards;
+        }
+
+        .dot:nth-child(3) {
+            animation: hideDot 0.5s 1.5s forwards;
+        }
+
+        .dot:nth-child(4) {
+            animation: hideDot 0.5s 2.5s forwards;
+        }
+
+        .dot:nth-child(5) {
+            animation: hideDot 0.5s 3.6s forwards;
+        }
+
+        .dot:nth-child(6) {
+            animation: hideDot 0.5s 4.8s forwards;
+        }
+
+        .dot:nth-child(7) {
+            animation: hideDot 0.5s 5.8s forwards;
+        }
+
+        .dot:nth-child(8) {
+            animation: hideDot 0.5s 7s forwards;
+        }
+
+        .dot:nth-child(9) {
+            animation: hideDot 0.5s 8s forwards;
+        }
+
+        @keyframes hideDot {
+            to {
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="progress-container">
+        <div class="dots-container">
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="cherry"></div>
+        </div>
+        <div class="pacman">
+            <div class="pacman-mouth"></div>
+        </div>
+        <div class="progress-bar">
+            <div class="progress"></div>
+            <div class="progress-text"></div>
+        </div>
+    </div>
+
+</body>
+
+</html>

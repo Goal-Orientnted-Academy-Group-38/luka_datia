@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Neon Navbar</title>
+
+</head>
+
+<style>
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Arial', sans-serif;
+        background: #0a0a0a;
+        color: #fff;
+        overflow-x: hidden;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .navbar {
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: rgba(10, 10, 10, 0.9);
+        padding: 20px 40px;
+        border-radius: 20px;
+        box-shadow: 0 0 20px rgba(0, 255, 204, 0.3), 0 0 40px rgba(255, 0, 204, 0.3);
+        transform-style: preserve-3d;
+        perspective: 1000px;
+    }
+
+    .menu {
+        display: flex;
+        gap: 40px;
+        list-style: none;
+    }
+
+    .menu li {
+        position: relative;
+    }
+
+    .menu a {
+        text-decoration: none;
+        color: #00ffcc;
+        font-size: 20px;
+        font-weight: bold;
+        text-transform: uppercase;
+        padding: 10px 20px;
+        transition: all 0.3s ease;
+        position: relative;
+        display: inline-block;
+    }
+
+    .menu a::before {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0%;
+        height: 2px;
+        background: #ff00cc;
+        transition: width 0.3s ease;
+    }
+
+    .menu a:hover::before {
+        width: 100%;
+    }
+
+    .menu a:hover {
+        color: #ff00cc;
+        text-shadow: 0 0 10px #ff00cc, 0 0 20px #ff00cc;
+    }
+
+</style>
+
+<body>
+
+    <nav class="navbar">
+
+        <ul class="menu">
+
+            <li><a href="#">Home</a></li>
+
+            <li><a href="#">About</a></li>
+
+            <li><a href="#">Services</a></li>
+
+            <li><a href="#">Contact</a></li>
+
+        </ul>
+
+    </nav>
+    
+</body>
+
+</html>

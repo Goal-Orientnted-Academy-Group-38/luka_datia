@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>🟢 Matrix Access Portal</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #000;
+            font-family: 'Courier New', Courier, monospace;
+            color: #0f0;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .matrix-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .code {
+            position: absolute;
+            font-size: 18px;
+            color: #00ff00;
+            animation: fall linear infinite;
+            text-shadow: 0 0 10px #0f0;
+        }
+
+        @keyframes fall {
+            0% {
+                top: -5%;
+                opacity: 0;
+            }
+
+            100% {
+                top: 105%;
+                opacity: 1;
+            }
+        }
+
+        .login-form {
+            background: rgba(0, 0, 0, 0.85);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px #00ff00, inset 0 0 40px #00ff00;
+            text-align: center;
+            width: 380px;
+            animation: fadeInForm 1.2s ease;
+            position: relative;
+            z-index: 2;
+        }
+
+        @keyframes fadeInForm {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .title {
+            font-size: 32px;
+            margin-bottom: 25px;
+            text-shadow: 0 0 10px #0f0;
+            animation: glitch 2s infinite;
+            font-weight: bold;
+        }
+
+        @keyframes glitch {
+
+            0%,
+            100% {
+                transform: translate(0);
+            }
+
+            33% {
+                transform: translate(-2px, 2px);
+            }
+
+            66% {
+                transform: translate(2px, -2px);
+            }
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #0f0;
+            font-size: 16px;
+        }
+
+        .input {
+            width: 100%;
+            padding: 12px;
+            background: transparent;
+            border: 1px solid #0f0;
+            color: #0f0;
+            font-size: 16px;
+            outline: none;
+            box-shadow: 0 0 10px #0f0;
+            transition: box-shadow 0.3s ease;
+        }
+
+        .input:focus {
+            box-shadow: 0 0 20px #00ff88;
+        }
+
+        .button {
+            margin-top: 20px;
+            padding: 14px;
+            width: 100%;
+            background: #0f0;
+            color: #000;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            border-radius: 8px;
+            text-transform: uppercase;
+            font-size: 18px;
+            box-shadow: 0 0 20px #0f0, inset 0 0 30px #00ff00;
+            transition: 0.3s ease;
+        }
+
+        .button:hover {
+            background: #1fff1f;
+            box-shadow: 0 0 40px #00ff00, inset 0 0 30px #00ff00;
+        }
+
+        .status-text {
+            margin-top: 20px;
+            font-size: 18px;
+            display: none;
+            text-shadow: 0 0 5px #0f0;
+            font-weight: bold;
+        }
+
+        .emoji {
+            font-size: 30px;
+            margin: 0 5px;
+            animation: blink 1s infinite alternate;
+        }
+
+        @keyframes blink {
+            from {
+                opacity: 0.3;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .error {
+            color: red;
+            text-shadow: 0 0 8px red;
+        }
+
+        .success {
+            color: #00ff00;
+        }
+
+        /* Additional animation for background glitch */
+        @keyframes backgroundGlitch {
+            0% {
+                background-color: #000;
+            }
+
+            50% {
+                background-color: #00ff00;
+            }
+
+            100% {
+                background-color: #000;
+            }
+        }
+
+        .glitch-background {
+            animation: backgroundGlitch 2s infinite;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="matrix-bg" id="matrix"></div>
+
+    <div class="login-form glitch-background">
+        <div class="title">🔐 Matrix Login Terminal</div>
+
+        <div class="form-group">
+            <label for="email">📧 Email</label>
+            <input class="input" type="text" id="email" placeholder="es. neo@matrix.io" />
+        </div>
+
+        <div class="form-group">
+            <label for="password">🔑 Password</label>
+            <input class="input" type="password" id="password" placeholder="••••••" />
+        </div>
+
+        <button class="button" onclick="handleLogin()">💾 Access</button>
+
+        <div class="status-text" id="statusText"></div>
+    </div>
+
+    <script>
+        const matrix = document.getElementById("matrix");
+        const chars = "アァイウエオカキクケコサシスABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789✦☯★https://preply.com/it/?campaignid=590091262&network=o&adgroupid=1151189676327597&keyword=studiare%20lingue&matchtype=b&creative=&targetid=kwd-71950083741454:loc-93&placement=&loc_physical_ms=1821&device=c&msclkid=5eaf7c5b06e61c0cfebc145e299a30e3&utm_source=bing&utm_medium=cpc&utm_campaign=stu_sem_generic_web_0_ita_it_multiplesub_bm&utm_term=studiare%20lingue&utm_content=multiplesub_study_action_bmhttps://www.esl.it/it/lp/c2/soggiorni-linguistici?msclkid=cd6b90522ce511c85990f8570399eb6d&utm_source=bing&utm_medium=cpc&utm_campaign=IT%20-%20ALL%20-%20Languages%20-%20Broad&utm_term=imparare%20lingue%20all%20estero&utm_content=ALL%20-%20Languageshttps://it.search.yahoo.com/search;_ylt=Awr4_jB5LwVoao4DSYwdDQx.?p=lettere+in+lingue+stranissime&type=E210IT850G0&fr=mcafee&fr2=p%3As%2Cv%3Ai%2Cm%3Apivot&stype=webhttps://www.sololibri.net/Parole-intraducibili-le";
+
+        const createSymbol = () => {
+            const symbol = document.createElement("div");
+            symbol.classList.add("code");
+            symbol.textContent = chars[Math.floor(Math.random() * chars.length)];
+            symbol.style.left = Math.random() * window.innerWidth + "px";
+            symbol.style.animationDuration = (Math.random() * 2 + 2) + "s";
+            matrix.appendChild(symbol);
+            setTimeout(() => symbol.remove(), 5000);
+        };
+        setInterval(createSymbol, 50);
+
+        function handleLogin() {
+            const email = document.getElementById("email").value.trim();
+            const password = document.getElementById("password").value.trim();
+            const statusText = document.getElementById("statusText");
+
+            statusText.style.display = "block";
+            statusText.innerHTML = "<span class='emoji'>🧠</span> Verifica in corso...";
+
+            setTimeout(() => {
+                if (email === "ldatiashvili48@gmail.com" && password === "Luka2014") {
+                    statusText.className = "status-text success";
+                    statusText.innerHTML = "<span class='emoji'>✅</span> Accesso confermato. Benvenuto nella Matrix 🟢";
+
+                    // Suono (opzionale)
+                    const sound = new Audio("https://www.soundjay.com/button/sounds/button-30.mp3");
+                    sound.play();
+
+                } else {
+                    statusText.className = "status-text error";
+                    statusText.innerHTML = "<span class='emoji'>🚫</span> Email o password non corretti. Riprova!";
+                }
+            }, 1500);
+        }
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,1334 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .container {
+            font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+            font-size: 16px;
+            line-height: 22px;
+            position: relative;
+            width: fit-content;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            isolation: isolate;
+        }
+
+        .button-container {
+            position: relative;
+            width: fit-content;
+            height: fit-content;
+            transition: 0.2s all;
+        }
+
+        .bottom-dot {
+            position: absolute;
+            z-index: -2;
+            top: calc(4.5em + 8px);
+            left: calc(2em + 4px);
+            transform: translate(-50%);
+            width: 4px;
+            height: 4px;
+            background-color: #353535;
+            border-radius: 50%;
+            box-shadow:
+                0 0 0 2px #000,
+                0 0 4px 2px #28f0,
+                0 -1.3em 0.8em 0.8em #0051ff00,
+                0 -1.3em 0.8em 0.8em #0091ff00,
+                inset 0 1px 1px #131313;
+            transition: 0.2s all;
+        }
+
+        .outer-button {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: conic-gradient(#3e3f41 10%,
+                    #59595b,
+                    #3e3f41 15%,
+                    #121316 39%,
+                    #121316 61%,
+                    #3e3f41 85%,
+                    #59595b,
+                    #3e3f41 90%);
+            border-radius: 25%;
+            border: 4px solid #090a0d;
+            overflow: hidden;
+            cursor: pointer;
+            transition:
+                0.2s all,
+                0.5s width,
+                0.5s height,
+                0.3s 0.5s opacity;
+            isolation: isolate;
+            width: calc(4em + 8px);
+            height: calc(4em + 8px);
+        }
+
+        .outer-button .inset-shadow {
+            position: absolute;
+            top: -1px;
+            right: -1px;
+            bottom: -1px;
+            left: -1px;
+            border-radius: 25%;
+            transition: 0.2s all;
+        }
+
+        .outer-button:before {
+            content: "";
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            background: conic-gradient(#3e3f41 10%,
+                    #59595b,
+                    #3e3f41 15%,
+                    #121316 39%,
+                    #121316 61%,
+                    #3e3f41 85%,
+                    #59595b,
+                    #3e3f41 90%);
+            transition: 0.5s all;
+        }
+
+        .outer-button .bottom-shadow {
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            transition: 0.2s all;
+        }
+
+        .outer-button .bottom-shadow:before {
+            content: "";
+            position: absolute;
+            bottom: -0.5em;
+            left: 1em;
+            right: 1em;
+            height: 0.6em;
+            border-radius: 50%;
+            filter: blur(0.2em);
+            transition: 0.2s all;
+        }
+
+        .outer-button .bottom-shadow:after {
+            content: "";
+            position: absolute;
+            bottom: -0.3em;
+            left: 0;
+            right: 0;
+            height: 0.4em;
+            border-radius: 50%;
+            filter: blur(0.2em);
+            transition: 0.2s all;
+        }
+
+        .inner-button {
+            position: relative;
+            background: linear-gradient(0deg, #262423, #494a4e 70%, #5a606e);
+            width: 3em;
+            height: 3em;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 25%;
+            border: 1px solid #666666;
+            box-shadow: inset 0 2px 4px -1px #0007;
+            overflow: hidden;
+            isolation: isolate;
+            transition: 0.2s all;
+        }
+
+        .inner-button:before {
+            content: "";
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            background: linear-gradient(180deg, #262423, #494a4e 70%, #5a606e);
+            transition: 0.5s all;
+        }
+
+        .inner-button svg {
+            z-index: 1;
+            width: 2em;
+            height: 2em;
+            transition: 0.2s all;
+            transform-origin: center;
+        }
+
+        .popup {
+            position: absolute;
+            z-index: -2;
+            top: -2.5em;
+            left: calc(2em + 4px);
+            width: max-content;
+            transform: translate(-50%);
+            padding: 0.5em;
+            color: #aeaeae;
+            text-shadow: 0.5px 0.5px 2px #000;
+            border-radius: 0.75em;
+            border: 3px solid #000;
+            opacity: 0;
+            transition: 0.5s all;
+            pointer-events: none;
+            cursor: pointer;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+
+        .popup .popup-header {
+            translate: 0px 0px;
+            transition: 0.2s all;
+        }
+
+        .popup:before {
+            content: "";
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            border-radius: calc(0.75em - 3px);
+            background: linear-gradient(0deg,
+                    #262423,
+                    #403d3c 50%,
+                    #494a4e 50%,
+                    #494a4e 70%,
+                    #4e535e);
+            transition: 0.2s box-shadow;
+        }
+
+        .popup:after {
+            content: "";
+            position: absolute;
+            bottom: -1em;
+            left: 0;
+            right: 0;
+            height: 2em;
+        }
+
+        .popup:active:before {
+            box-shadow:
+                inset 2px 4px 8px -4px #000,
+                inset 2px 4px 8px -4px #0009;
+        }
+
+        .popup:active .popup-header {
+            translate: 1px 1px;
+        }
+
+        #wtf:not(:checked)~.container #toggle:checked~.button-container .outer-button:hover~.popup,
+        #wtf:not(:checked)~.container #toggle:checked~.button-container .popup:hover {
+            pointer-events: auto;
+            top: -3em;
+            opacity: 1;
+        }
+
+        .outer-button:active .inset-shadow {
+            box-shadow:
+                inset 0 0 8px #000,
+                inset 0 0 8px #000;
+        }
+
+        .outer-button:active .inner-button {
+            width: 2.75em;
+            height: 2.75em;
+            translate: 0px -1px;
+        }
+
+        .outer-button:active .inner-button:before {
+            opacity: 0.2;
+        }
+
+        .outer-button:active .inner-button svg {
+            scale: 0.9;
+        }
+
+        .outer-button:active:before {
+            opacity: 0;
+        }
+
+        .outer-button:active .bottom-shadow:before,
+        .outer-button:active .bottom-shadow:after {
+            translate: 0 -2px;
+        }
+
+        #toggle:checked~.button-container .bottom-dot {
+            background-color: #27e7f4;
+            box-shadow:
+                0 0 1px 2px #084dd1,
+                0 0 4px 2px #28fa,
+                0 -1.3em 0.8em 0.8em #0051ff,
+                0 -1.3em 0.8em 0.8em #0091ff88,
+                inset 0 1px 1px #a9fffe;
+        }
+
+        #toggle:checked~.button-container .outer-button .bottom-shadow:before {
+            background-color: #0091ff;
+        }
+
+        #toggle:checked~.button-container .outer-button .bottom-shadow:after {
+            background-color: #05f;
+        }
+
+        .settings-wrapper {
+            position: absolute;
+            z-index: -1;
+            pointer-events: none !important;
+            opacity: 0;
+            width: calc(4em + 8px);
+            height: calc(4em + 8px);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            transition:
+                0.5s all allow-discrete,
+                0.5s 0.5s opacity;
+            overflow: hidden;
+        }
+
+        .settings {
+            transition: 0.5s all;
+            background: #3c3c3c;
+            padding: 0.5em;
+            border: 4px solid #000;
+            background: conic-gradient(#3e3f41 10%,
+                    #59595b,
+                    #3e3f41 15%,
+                    #121316 39%,
+                    #121316 61%,
+                    #3e3f41 85%,
+                    #59595b,
+                    #3e3f41 90%);
+            height: 100%;
+            overflow: hidden;
+            color: #fff;
+            border-radius: 1em;
+        }
+
+        .settings .settings-inner {
+            background: linear-gradient(180deg, #272729, #494a4e);
+            height: 100%;
+            border-radius: 1em;
+            border: 1px solid #666666;
+            overflow: hidden;
+        }
+
+        .settings .settings-header {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            height: 3em;
+            border-bottom: 1px solid #777;
+            background: linear-gradient(180deg, #3d3d3f 50%, #2e2e2f 50%, #343537);
+            border-top-left-radius: 1em;
+            border-top-right-radius: 1em;
+        }
+
+        .settings .settings-header>div {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-top-left-radius: 1em;
+            border-top-right-radius: 1em;
+            opacity: 0;
+            pointer-events: none;
+            display: flex;
+            align-items: center;
+            padding: 0.5em;
+            gap: 0.5em;
+            transition: 0.3s opacity linear;
+        }
+
+        .settings .settings-header>div .back {
+            color: #aeaeae;
+            -webkit-user-select: none;
+            user-select: none;
+            padding: 0.25em;
+            border-radius: 0.75em 6px 6px;
+            cursor: pointer;
+            outline: 1px solid rgba(119, 119, 119, 0);
+            transition: 0.2s all;
+        }
+
+        .settings .settings-header>div .back .back-text {
+            transition: 0.2s all;
+        }
+
+        .settings .settings-header>div .back:hover {
+            background-color: #ffffff0a;
+            outline: 1px solid rgba(119, 119, 119, 0.5333333333);
+        }
+
+        .settings .settings-header>div .back:active {
+            background-color: #4040401a;
+            outline: 1px solid #777;
+            box-shadow: inset 1px 2px 4px -2px #000;
+        }
+
+        .settings .settings-header>div .back:active .back-text {
+            translate: 1px 1px;
+        }
+
+        .settings .settings-header>div .vertical-line {
+            height: 1.5em;
+            width: 1px;
+            background: #777;
+            box-shadow: 1px 1px #000;
+        }
+
+        .settings .settings-header>div .settings-title {
+            font-weight: 700;
+        }
+
+        .settings .settings-header .header-sub .settings-title:before {
+            content: "";
+            transition: content 0s 0.3s;
+            transition-delay: 0.3s;
+            transition-behavior: allow-discrete;
+        }
+
+        .settings .settings-content {
+            position: relative;
+            height: 100%;
+            width: 100%;
+            isolation: isolate;
+        }
+
+        .settings .settings-content .loading {
+            position: absolute;
+            z-index: -1;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -150%);
+            transition: 0s 0.5s opacity;
+        }
+
+        .settings .settings-buttons {
+            display: flex;
+            padding: 0 1em;
+            flex-direction: column;
+            gap: 1em;
+            opacity: 0;
+            transition: 0s 0.5s opacity;
+            height: calc(100% - 3em);
+            overflow: auto;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(119, 119, 119, 0) rgba(60, 60, 60, 0);
+            transition:
+                0.5s all,
+                0.5s 1.5s scrollbar-color,
+                0.5s 0s opacity,
+                0s 0s pointer-events;
+            transition-behavior: allow-discrete;
+            pointer-events: none;
+        }
+
+        .settings .settings-button {
+            position: relative;
+            padding: 0.5em;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: 0.2s all;
+            outline: 1px solid rgba(119, 119, 119, 0);
+            width: 100%;
+            isolation: isolate;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .settings .settings-button:first-child {
+            margin-top: 1em;
+        }
+
+        .settings .settings-button:last-child {
+            margin-bottom: 1em;
+        }
+
+        .settings .settings-button .settings-button-content {
+            position: relative;
+            transition: 0.2s all;
+            width: 100%;
+            display: flex;
+            justify-content: left;
+            align-items: center;
+            gap: 0.5em;
+        }
+
+        .settings .settings-button svg {
+            width: 1.5em;
+            height: 1.5em;
+            color: #aeaeae;
+        }
+
+        .settings .settings-button:before {
+            content: "";
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            background: linear-gradient(#ffffff0a 50%, #0000 50%);
+            opacity: 0;
+            transition: 0.5s all;
+        }
+
+        .settings .settings-button:hover {
+            outline: 1px solid rgba(119, 119, 119, 0.5333333333);
+        }
+
+        .settings .settings-button:hover:before {
+            opacity: 1;
+        }
+
+        .settings .settings-button:active {
+            background-color: #0000001a;
+            outline: 1px solid #777;
+            box-shadow: inset 2px 4px 4px -2px #000;
+        }
+
+        .settings .settings-button:active:before {
+            opacity: 1;
+        }
+
+        .settings .settings-button:active .settings-button-content {
+            translate: 1px 1px;
+        }
+
+        .settings .settings-device {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5em;
+            height: 0;
+            padding: 0.75em;
+            overflow: hidden;
+            transition: 0.5s all;
+            outline: 0px solid #777;
+        }
+
+        .settings .settings-device .section {
+            display: flex;
+            flex-direction: column;
+            gap: 0em;
+            padding-bottom: 0.5em;
+            border-bottom: 1px solid #777;
+        }
+
+        .settings .settings-device .section-heading {
+            font-weight: 700;
+        }
+
+        .settings .settings-device .section-text {
+            display: flex;
+            justify-content: left;
+            align-items: center;
+            gap: 0.5em;
+        }
+
+        .settings .settings-device .section-text:after {
+            content: "";
+            transition: 0s 0.5s content;
+            transition-behavior: allow-discrete;
+        }
+
+        .settings .settings-device #device-status:after {
+            content: "Unpaired";
+        }
+
+        .settings .settings-device .switch {
+            display: none;
+            transition: 0s 0.5s display;
+            transition-behavior: allow-discrete;
+        }
+
+        .settings .settings-device #use-for {
+            display: flex;
+            opacity: 0;
+            pointer-events: none;
+            transition:
+                0.5s 0.5s pointer-events,
+                0.5s 0.5s opacity;
+            transition-behavior: allow-discrete;
+            flex-direction: column;
+            gap: 0.125em;
+        }
+
+        .settings .settings-device .section-bottom-buttons {
+            position: absolute;
+            pointer-events: auto;
+            left: 1em;
+            right: 1em;
+            top: calc(12em - 4px);
+            display: grid;
+            gap: 1em;
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .settings .settings-device .section-pair,
+        .settings .settings-device .section-connect {
+            display: none;
+            position: relative;
+            justify-content: center;
+            padding: 0.25em;
+            border-radius: 6px;
+            cursor: pointer;
+            outline: 1px solid rgba(119, 119, 119, 0);
+            transition:
+                0.2s all,
+                0.5s opacity,
+                0s 0.5s display;
+            transition-behavior: allow-discrete;
+            overflow: hidden;
+        }
+
+        .settings .settings-device .section-pair:before,
+        .settings .settings-device .section-connect:before {
+            content: "";
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            background: linear-gradient(#ffffff0a 50%, #0000 50%);
+            opacity: 0;
+            transition: 0.5s all;
+        }
+
+        .settings .settings-device .section-pair:after,
+        .settings .settings-device .section-connect:after {
+            transition: 0s 0.5s content;
+            transition-behavior: allow-discrete;
+        }
+
+        .settings .settings-device .section-pair:hover,
+        .settings .settings-device .section-connect:hover {
+            background-color: #ffffff0a;
+            outline: 1px solid rgba(119, 119, 119, 0.5333333333);
+        }
+
+        .settings .settings-device .section-pair:hover:before,
+        .settings .settings-device .section-connect:hover:before {
+            opacity: 1;
+        }
+
+        .settings .settings-device .section-pair:active,
+        .settings .settings-device .section-connect:active {
+            background-color: #4040401a;
+            outline: 1px solid #777;
+            box-shadow: inset 1px 2px 4px -2px #000;
+        }
+
+        .settings .settings-device .section-pair:active:before,
+        .settings .settings-device .section-connect:active:before {
+            opacity: 1;
+        }
+
+        .settings .settings-device .section-pair:after {
+            content: "Pair";
+        }
+
+        .settings .settings-device .section-connect {
+            display: none;
+            opacity: 0;
+        }
+
+        .settings .settings-device .section-connect:after {
+            content: "Connect";
+        }
+
+        .settings * {
+            white-space: nowrap;
+        }
+
+        #main:checked~.settings .settings-header .header-main {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        #main:not(:checked)~.settings .settings-header .header-sub {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        #main:not(:checked)~.settings .settings-buttons {
+            height: 0;
+        }
+
+        #main:not(:checked)~.settings .settings-device {
+            height: calc(100% - 3em);
+            outline: 1px solid #777;
+        }
+
+        #main:not(:checked)~.settings .section-text:after {
+            transition: 0s content;
+        }
+
+        #lgtv:checked~.settings .header-sub .settings-title:before {
+            content: 'LG TV 55"';
+            transition: content 0s;
+        }
+
+        #lgtv:checked~.settings #device-pair-lgtv {
+            display: flex;
+        }
+
+        #lgtv:checked~.settings #device-name:after {
+            content: 'LG TV 55"';
+        }
+
+        #lgtv:checked~.settings .switch-lgtv {
+            display: flex;
+        }
+
+        #lgtv:checked~.settings #use-for {
+            transition:
+                0s 0.5s pointer-events,
+                0.5s 0s opacity;
+        }
+
+        #lgtv:checked~#lgtv-paired:checked~.settings #device-status:after {
+            content: "Paired";
+        }
+
+        #lgtv:checked~#lgtv-paired:checked~.settings .section-pair:after {
+            content: "Forget";
+        }
+
+        #lgtv:checked~#lgtv-paired:checked~.settings #device-connect-lgtv {
+            display: flex;
+            opacity: 1;
+        }
+
+        #lgtv:checked~#lgtv-paired:checked~.settings #use-for {
+            pointer-events: auto;
+            opacity: 1;
+        }
+
+        #lgtv:checked~#lgtv-paired:checked~#lgtv-connected:checked~.settings #device-status:after {
+            content: "Connected";
+        }
+
+        #lgtv:checked~#lgtv-paired:checked~#lgtv-connected:checked~.settings .section-connect:after {
+            content: "Disconnect";
+        }
+
+        #lgtv:checked~#lgtv-paired:checked~#lgtv-connected:checked~.settings #device-connect-lgtv {
+            display: flex;
+        }
+
+        #lrls:checked~.settings .header-sub .settings-title:before {
+            content: "Living Room Speaker";
+            transition: content 0s;
+        }
+
+        #lrls:checked~.settings #device-pair-lrls {
+            display: flex;
+        }
+
+        #lrls:checked~.settings #device-name:after {
+            content: "Living Room Speaker";
+        }
+
+        #lrls:checked~.settings .switch-lrls {
+            display: flex;
+        }
+
+        #lrls:checked~.settings #use-for {
+            transition:
+                0s 0.5s pointer-events,
+                0.5s 0s opacity;
+        }
+
+        #lrls:checked~#lrls-paired:checked~.settings #device-status:after {
+            content: "Paired";
+        }
+
+        #lrls:checked~#lrls-paired:checked~.settings .section-pair:after {
+            content: "Forget";
+        }
+
+        #lrls:checked~#lrls-paired:checked~.settings #device-connect-lrls {
+            display: flex;
+            opacity: 1;
+        }
+
+        #lrls:checked~#lrls-paired:checked~.settings #use-for {
+            pointer-events: auto;
+            opacity: 1;
+        }
+
+        #lrls:checked~#lrls-paired:checked~#lrls-connected:checked~.settings #device-status:after {
+            content: "Connected";
+        }
+
+        #lrls:checked~#lrls-paired:checked~#lrls-connected:checked~.settings .section-connect:after {
+            content: "Disconnect";
+        }
+
+        #lrls:checked~#lrls-paired:checked~#lrls-connected:checked~.settings #device-connect-lrls {
+            display: flex;
+        }
+
+        .dummy #device-pair-dummy,
+        #undv:checked~.settings #device-pair-dummy,
+        #d77c:checked~.settings #device-pair-dummy,
+        #jiph:checked~.settings #device-pair-dummy {
+            display: flex;
+            transition:
+                0.2s all,
+                0s 0s display;
+        }
+
+        #device-pair-dummy .spinner {
+            display: none;
+            font-size: inherit;
+            transition: 0s 0s display allow-discrete;
+        }
+
+        #device-pair-dummy:after {
+            content: "Pair";
+            transition: 0s 0s content allow-discrete !important;
+        }
+
+        #device-pair-dummy:focus:after {
+            content: "Pairing failed";
+            transition: 0s 2s content allow-discrete !important;
+        }
+
+        #device-pair-dummy:focus .spinner {
+            display: none;
+            transition: 0s 2s display allow-discrete;
+        }
+
+        #device-pair-dummy:active:after {
+            content: "Pairing...";
+            transition: 0s 0s content allow-discrete !important;
+        }
+
+        #device-pair-dummy:active .spinner {
+            display: block;
+        }
+
+        #jiph:checked~.settings .header-sub .settings-title:before {
+            content: "Jessie's iPhone";
+            transition: content 0s;
+        }
+
+        #jiph:checked~.settings #device-name:after {
+            content: "Jessie's iPhone";
+        }
+
+        #d77c:checked~.settings .header-sub .settings-title:before {
+            content: "D77CACC0231C8ADF";
+            transition: content 0s;
+        }
+
+        #d77c:checked~.settings #device-name:after {
+            content: "D77CACC0231C8ADF";
+        }
+
+        #undv:checked~.settings .header-sub .settings-title:before {
+            content: "Unknown Device";
+            transition: content 0s;
+        }
+
+        #undv:checked~.settings #device-name:after {
+            content: "Unknown Device";
+        }
+
+        #wtf:checked~.container .popup {
+            opacity: 0;
+        }
+
+        #wtf:checked~.container .outer-button,
+        #wtf:checked~.container .bottom-dot {
+            transition:
+                0.5s all allow-discrete,
+                0s opacity;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        #wtf:checked~.container .button-container {
+            pointer-events: none;
+        }
+
+        #wtf:checked~.container .settings-wrapper {
+            pointer-events: auto;
+            opacity: 1;
+            width: 20em;
+            height: 20em;
+            transition:
+                0.5s all allow-discrete,
+                0s 0s opacity;
+        }
+
+        #wtf:checked~.container .settings {
+            padding: 1em;
+            border-radius: 1.5em;
+        }
+
+        #wtf:checked~.container .loading {
+            transition: 0.3s 1.5s opacity;
+            opacity: 0;
+        }
+
+        #wtf:checked~.container .settings-buttons {
+            scrollbar-width: thin;
+            scrollbar-color: #777 #3c3c3c;
+            transition:
+                0.5s all,
+                0.5s 1.5s scrollbar-color,
+                0.5s 1.5s opacity,
+                0s 1.5s pointer-events;
+            transition-behavior: allow-discrete;
+            pointer-events: auto;
+            opacity: 1;
+        }
+
+        .spinner {
+            font-size: 28px;
+            position: relative;
+            display: inline-block;
+            width: 1em;
+            height: 1em;
+        }
+
+        .spinner .spinner-blade {
+            position: absolute;
+            left: 0.4629em;
+            bottom: 0;
+            width: 0.074em;
+            height: 0.2777em;
+            border-radius: 0.0555em;
+            background-color: transparent;
+            -webkit-transform-origin: center -0.2222em;
+            -ms-transform-origin: center -0.2222em;
+            transform-origin: center -0.2222em;
+            animation: spinner-fade9234 1s infinite linear;
+        }
+
+        .spinner .spinner-blade:nth-child(1) {
+            -webkit-animation-delay: 0s;
+            animation-delay: 0s;
+            -webkit-transform: rotate(0deg);
+            -ms-transform: rotate(0deg);
+            transform: rotate(0);
+        }
+
+        .spinner .spinner-blade:nth-child(2) {
+            -webkit-animation-delay: 83ms;
+            animation-delay: 83ms;
+            -webkit-transform: rotate(30deg);
+            -ms-transform: rotate(30deg);
+            transform: rotate(30deg);
+        }
+
+        .spinner .spinner-blade:nth-child(3) {
+            -webkit-animation-delay: 0.166s;
+            animation-delay: 0.166s;
+            -webkit-transform: rotate(60deg);
+            -ms-transform: rotate(60deg);
+            transform: rotate(60deg);
+        }
+
+        .spinner .spinner-blade:nth-child(4) {
+            -webkit-animation-delay: 0.249s;
+            animation-delay: 0.249s;
+            -webkit-transform: rotate(90deg);
+            -ms-transform: rotate(90deg);
+            transform: rotate(90deg);
+        }
+
+        .spinner .spinner-blade:nth-child(5) {
+            -webkit-animation-delay: 0.332s;
+            animation-delay: 0.332s;
+            -webkit-transform: rotate(120deg);
+            -ms-transform: rotate(120deg);
+            transform: rotate(120deg);
+        }
+
+        .spinner .spinner-blade:nth-child(6) {
+            -webkit-animation-delay: 0.415s;
+            animation-delay: 0.415s;
+            -webkit-transform: rotate(150deg);
+            -ms-transform: rotate(150deg);
+            transform: rotate(150deg);
+        }
+
+        .spinner .spinner-blade:nth-child(7) {
+            -webkit-animation-delay: 0.498s;
+            animation-delay: 0.498s;
+            -webkit-transform: rotate(180deg);
+            -ms-transform: rotate(180deg);
+            transform: rotate(180deg);
+        }
+
+        .spinner .spinner-blade:nth-child(8) {
+            -webkit-animation-delay: 0.581s;
+            animation-delay: 0.581s;
+            -webkit-transform: rotate(210deg);
+            -ms-transform: rotate(210deg);
+            transform: rotate(210deg);
+        }
+
+        .spinner .spinner-blade:nth-child(9) {
+            -webkit-animation-delay: 0.664s;
+            animation-delay: 0.664s;
+            -webkit-transform: rotate(240deg);
+            -ms-transform: rotate(240deg);
+            transform: rotate(240deg);
+        }
+
+        .spinner .spinner-blade:nth-child(10) {
+            -webkit-animation-delay: 0.747s;
+            animation-delay: 0.747s;
+            -webkit-transform: rotate(270deg);
+            -ms-transform: rotate(270deg);
+            transform: rotate(270deg);
+        }
+
+        .spinner .spinner-blade:nth-child(11) {
+            -webkit-animation-delay: 0.83s;
+            animation-delay: 0.83s;
+            -webkit-transform: rotate(300deg);
+            -ms-transform: rotate(300deg);
+            transform: rotate(300deg);
+        }
+
+        .spinner .spinner-blade:nth-child(12) {
+            -webkit-animation-delay: 0.913s;
+            animation-delay: 0.913s;
+            -webkit-transform: rotate(330deg);
+            -ms-transform: rotate(330deg);
+            transform: rotate(330deg);
+        }
+
+        @keyframes spinner-fade9234 {
+            0% {
+                background-color: #69717d;
+            }
+
+            to {
+                background-color: transparent;
+            }
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 3em;
+            height: 1.5em;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: 0.4s;
+            border-radius: 30px;
+            box-shadow: inset 0 2px 5px -2px #080808cc;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 1.5em;
+            width: 1.5em;
+            border-radius: 20px;
+            left: 0;
+            bottom: 0;
+            background: conic-gradient(#686868, #fff, #686868, #fff, #686868);
+            box-shadow: 5px 2px 7px #0808084f;
+            transition: 0.4s;
+        }
+
+        .switch input:checked+.slider {
+            background-color: #51a8ef;
+        }
+
+        .switch input:checked+.slider:before {
+            translate: 1.5em;
+            box-shadow: -5px 2px 7px #0808084f;
+        }
+    </style>
+</head>
+
+<body>
+    <input id="wtf" type="checkbox" style="display: none" />
+    <div class="container">
+        <input type="checkbox" id="toggle" checked="" style="display: none" />
+        <div class="button-container">
+            <div class="bottom-dot"></div>
+            <label class="outer-button" for="toggle">
+                <div class="bottom-shadow"></div>
+                <div class="inner-button">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <defs id="defs1">
+                            <linearGradient x1="11.997516" y1="2.411453" x2="11.997351" y2="21.588501"
+                                gradientUnits="userSpaceOnUse" id="linearGradient1">
+                                <stop style="stop-color: #131415; stop-opacity: 1" offset="0" id="stop1"></stop>
+                                <stop style="stop-color: #2b2c2e; stop-opacity: 1" offset="1" id="stop2"></stop>
+                            </linearGradient>
+                            <linearGradient id="linearGradient2" x1="12.397508" y1="2.809" x2="12.397354" y2="21.98605"
+                                gradientUnits="userSpaceOnUse">
+                                <stop stop-color="#707070" offset="0"></stop>
+                                <stop stop-color="#8e8e8e" offset="1"></stop>
+                            </linearGradient>
+                            <filter id="filter">
+                                <feGaussianBlur stdDeviation="0.1 0.1" result="blur"></feGaussianBlur>
+                            </filter>
+                        </defs>
+                        <path
+                            d="m 11.933203,2.3116573 c -0.0359,-0.00132 -0.07121,-6.43e-4 -0.107422,0.00195 -0.239684,0.017578 -0.46502,0.1208856 -0.634765,0.2910156 C 11.004186,2.79245 10.899522,3.0467363 10.9,3.3116573 V 3.5518917 9.479626 L 7.017188,5.6065791 v -0.00195 C 6.920068,5.5078071 6.806641,5.4364663 6.687109,5.3878291 6.325315,5.2406168 5.896255,5.3126861 5.603125,5.6065791 5.463106,5.7473753 5.376154,5.9199769 5.3375,6.1007198 5.336,6.1079498 5.333,6.1149448 5.3316,6.1222038 c -0.009,0.045499 -0.01108,0.090577 -0.01367,0.1367188 -9.28e-4,0.018398 -0.006,0.036271 -0.0059,0.054687 -1e-6,0.00131 -4e-6,0.0026 0,0.00391 5.29e-4,0.061862 0.0076,0.1246318 0.01953,0.1855468 0.0363,0.1909985 0.127418,0.3738367 0.275392,0.5214815 l 4.882813,4.8750001 -4.882813,4.875 c -0.147974,0.147645 -0.23909,0.330483 -0.27539,0.521484 -0.01186,0.06241 -0.0196,0.126133 -0.01953,0.189454 -8.7e-5,0.01842 0.0049,0.03629 0.0059,0.05469 0.0026,0.04614 0.0047,0.09122 0.01367,0.136719 0.0014,0.0072 0.0043,0.01426 0.0059,0.02148 0.03865,0.180743 0.125606,0.353345 0.265625,0.494141 0.293129,0.293928 0.72219,0.36596 1.083984,0.21875 0.119532,-0.04864 0.232964,-0.119979 0.330078,-0.216797 v -0.002 L 10.9,14.31947 v 5.927734 0.240235 c -4.78e-4,0.264921 0.104186,0.519207 0.291016,0.707031 0.169745,0.17013 0.395081,0.273436 0.634765,0.291016 0.289701,0.02077 0.57412,-0.08544 0.779297,-0.291016 l 0.947266,-0.947266 3.351562,-3.351562 c 0.390442,-0.389736 0.390442,-1.022374 0,-1.41211 l -3.59375,-3.583984 3.59375,-3.5839845 c 0.390443,-0.389736 0.390443,-1.0223733 0,-1.4121094 L 13.552344,3.5518917 12.605078,2.604626 C 12.425548,2.4247488 12.184525,2.3208836 11.933203,2.3116573 Z M 12.9,5.729626 14.780859,7.6104854 12.9,9.479626 Z m -8,4.669922 a 1.5,1.5 0 0 0 -1.5,1.5 1.5,1.5 0 0 0 1.5,1.5 1.5,1.5 0 0 0 1.5,-1.5 1.5,1.5 0 0 0 -1.5,-1.5 z m 14,0 a 1.5,1.5 0 0 0 -1.5,1.5 1.5,1.5 0 0 0 1.5,1.5 1.5,1.5 0 0 0 1.5,-1.5 1.5,1.5 0 0 0 -1.5,-1.5 z m -6,3.919922 1.880859,1.86914 L 12.9,18.06947 Z"
+                            fill="black" filter="url(#filter)"></path>
+                        <path
+                            d="m 12.133203,2.5096574 c -0.0359,-0.00132 -0.07121,-6.43e-4 -0.107422,0.00195 C 11.786097,2.5291854 11.560761,2.632493 11.391016,2.802623 11.204186,2.9904501 11.099522,3.2447364 11.1,3.5096574 V 3.7498918 9.6776261 L 7.2171884,5.8045792 v -0.00195 c -0.09712,-0.096822 -0.210547,-0.1681628 -0.330079,-0.2168 -0.361794,-0.1472123 -0.790854,-0.075143 -1.083984,0.21875 -0.140019,0.1407962 -0.226971,0.3133978 -0.265625,0.4941407 -0.0015,0.00723 -0.0045,0.014225 -0.0059,0.021484 -0.009,0.045499 -0.01108,0.090577 -0.01367,0.1367188 -9.28e-4,0.018398 -0.006,0.036271 -0.0059,0.054687 -1e-6,0.00131 -4e-6,0.0026 0,0.00391 5.29e-4,0.061862 0.0076,0.1246318 0.01953,0.1855468 0.0363,0.1909985 0.127418,0.3738367 0.275392,0.5214815 l 4.8828126,4.875 -4.8828126,4.875 c -0.147974,0.147645 -0.23909,0.330483 -0.27539,0.521484 -0.01186,0.06241 -0.0196,0.126133 -0.01953,0.189454 -8.7e-5,0.01842 0.0049,0.03629 0.0059,0.05469 0.0026,0.04614 0.0047,0.09122 0.01367,0.136719 0.0014,0.0072 0.0043,0.01426 0.0059,0.02148 0.03865,0.180743 0.125606,0.353345 0.265625,0.494141 0.293129,0.293928 0.72219,0.36596 1.083984,0.21875 0.119532,-0.04864 0.232964,-0.119979 0.330078,-0.216797 v -0.002 L 11.1,14.51747 v 5.927734 0.240235 c -4.78e-4,0.264921 0.104186,0.519207 0.291016,0.707031 0.169745,0.17013 0.395081,0.273436 0.634765,0.291016 0.289701,0.02077 0.57412,-0.08544 0.779297,-0.291016 l 0.947266,-0.947266 3.351562,-3.351562 c 0.390442,-0.389736 0.390442,-1.022374 0,-1.41211 l -3.59375,-3.583984 3.59375,-3.5839844 c 0.390443,-0.389736 0.390443,-1.0223733 0,-1.4121094 L 13.752344,3.7498918 12.805078,2.8026261 C 12.625548,2.6227489 12.384525,2.5188837 12.133203,2.5096574 Z M 13.1,5.9276261 14.980859,7.8084855 13.1,9.6776261 Z M 5.1000004,10.597548 a 1.5,1.5 0 0 0 -1.5,1.5 1.5,1.5 0 0 0 1.5,1.5 1.5,1.5 0 0 0 1.5,-1.5 1.5,1.5 0 0 0 -1.5,-1.5 z m 13.9999996,0 a 1.5,1.5 0 0 0 -1.5,1.5 1.5,1.5 0 0 0 1.5,1.5 1.5,1.5 0 0 0 1.5,-1.5 1.5,1.5 0 0 0 -1.5,-1.5 z m -6,3.919922 1.880859,1.86914 L 13.1,18.26747 Z"
+                            fill="black" filter="url(#filter)"></path>
+                        <path
+                            d="m 12.433203,2.8096573 c -0.0359,-0.00132 -0.07121,-6.43e-4 -0.107422,0.00195 -0.239684,0.017578 -0.46502,0.1208856 -0.634765,0.2910156 C 11.504186,3.29045 11.399522,3.5447363 11.4,3.8096573 V 4.0498917 9.9776261 L 7.5171875,6.1045791 v -0.00195 C 7.4200735,6.0058074 7.3066414,5.9344663 7.1871094,5.8858291 6.8253151,5.7386168 6.3962547,5.8106865 6.103125,6.1045791 5.9631061,6.2453753 5.8761542,6.4179769 5.8375,6.5987198 c -0.00155,0.00723 -0.00447,0.014225 -0.00586,0.021484 -0.00895,0.045499 -0.011077,0.090577 -0.013672,0.1367188 -9.278e-4,0.018398 -0.00595,0.036271 -0.00586,0.054687 -1.5e-6,0.00131 -3.6e-6,0.0026 0,0.00391 5.287e-4,0.061862 0.00756,0.1246318 0.019531,0.1855468 0.036302,0.1909985 0.1274183,0.3738367 0.2753922,0.5214815 l 4.8828128,4.8750001 -4.8828128,4.875 c -0.1479739,0.147645 -0.2390901,0.330483 -0.2753906,0.521484 -0.011861,0.06241 -0.019603,0.126133 -0.019531,0.189454 -8.65e-5,0.01842 0.00493,0.03629 0.00586,0.05469 0.00259,0.04614 0.00472,0.09122 0.013672,0.136719 0.00143,0.0072 0.00427,0.01426 0.00586,0.02148 0.038654,0.180743 0.1256061,0.353345 0.265625,0.494141 0.2931297,0.293928 0.7221901,0.36596 1.0839844,0.21875 0.119532,-0.04864 0.2329641,-0.119979 0.3300781,-0.216797 v -0.002 L 11.4,14.81747 v 5.927734 0.240235 c -4.78e-4,0.264921 0.104186,0.519207 0.291016,0.707031 0.169745,0.17013 0.395081,0.273436 0.634765,0.291016 0.289701,0.02077 0.57412,-0.08544 0.779297,-0.291016 l 0.947266,-0.947266 3.351562,-3.351562 c 0.390442,-0.389736 0.390442,-1.022374 0,-1.41211 l -3.59375,-3.583984 3.59375,-3.5839849 c 0.390443,-0.389736 0.390443,-1.0223729 0,-1.412109 L 14.052344,4.0498917 13.105078,3.102626 C 12.925548,2.9227488 12.684525,2.8188836 12.433203,2.8096573 Z M 13.4,6.227626 15.280859,8.1084854 13.4,9.9776261 Z m -8,4.669922 a 1.5,1.5 0 0 0 -1.5,1.5 1.5,1.5 0 0 0 1.5,1.5 1.5,1.5 0 0 0 1.5,-1.5 1.5,1.5 0 0 0 -1.5,-1.5 z m 14,0 a 1.5,1.5 0 0 0 -1.5,1.5 1.5,1.5 0 0 0 1.5,1.5 1.5,1.5 0 0 0 1.5,-1.5 1.5,1.5 0 0 0 -1.5,-1.5 z m -6,3.919922 1.880859,1.86914 L 13.4,18.56747 Z"
+                            fill="url(#linearGradient2)"></path>
+                        <path
+                            d="M 12.033203 2.4121094 C 11.9973 2.4107913 11.961994 2.4114664 11.925781 2.4140625 C 11.686097 2.4316405 11.460761 2.5349481 11.291016 2.7050781 C 11.104186 2.8929021 10.999522 3.1471884 11 3.4121094 L 11 3.6523438 L 11 9.5800781 L 7.1171875 5.7070312 L 7.1171875 5.7050781 C 7.0200735 5.6082595 6.9066414 5.5369184 6.7871094 5.4882812 C 6.4253151 5.3410689 5.9962547 5.4131386 5.703125 5.7070312 C 5.5631061 5.8478274 5.4761542 6.020429 5.4375 6.2011719 C 5.4359531 6.2084052 5.4330253 6.2153968 5.4316406 6.2226562 C 5.4226908 6.2681549 5.4205631 6.3132335 5.4179688 6.359375 C 5.417041 6.3777733 5.4120229 6.3956459 5.4121094 6.4140625 C 5.4121079 6.4153698 5.4121058 6.4166613 5.4121094 6.4179688 C 5.4126381 6.4798311 5.4196716 6.5426006 5.4316406 6.6035156 C 5.4679414 6.794517 5.5590573 6.9773552 5.7070312 7.125 L 10.589844 12 L 5.7070312 16.875 C 5.5590573 17.022645 5.4679411 17.205483 5.4316406 17.396484 C 5.4197795 17.458894 5.4120376 17.522617 5.4121094 17.585938 C 5.4120229 17.604354 5.4170411 17.622227 5.4179688 17.640625 C 5.4205633 17.686767 5.4226906 17.731845 5.4316406 17.777344 C 5.4330666 17.784593 5.4359127 17.791606 5.4375 17.798828 C 5.476154 17.979571 5.5631061 18.152173 5.703125 18.292969 C 5.9962547 18.586897 6.4253151 18.658929 6.7871094 18.511719 C 6.9066414 18.463082 7.0200735 18.39174 7.1171875 18.294922 L 7.1171875 18.292969 L 11 14.419922 L 11 20.347656 L 11 20.587891 C 10.999522 20.852812 11.104186 21.107098 11.291016 21.294922 C 11.460761 21.465052 11.686097 21.568358 11.925781 21.585938 C 12.215482 21.606707 12.499901 21.500496 12.705078 21.294922 L 13.652344 20.347656 L 17.003906 16.996094 C 17.394348 16.606358 17.394348 15.97372 17.003906 15.583984 L 13.410156 12 L 17.003906 8.4160156 C 17.394349 8.0262796 17.394349 7.3936423 17.003906 7.0039062 L 13.652344 3.6523438 L 12.705078 2.7050781 C 12.525548 2.5252009 12.284525 2.4213357 12.033203 2.4121094 z M 13 5.8300781 L 14.880859 7.7109375 L 13 9.5800781 L 13 5.8300781 z M 5 10.5 A 1.5 1.5 0 0 0 3.5 12 A 1.5 1.5 0 0 0 5 13.5 A 1.5 1.5 0 0 0 6.5 12 A 1.5 1.5 0 0 0 5 10.5 z M 19 10.5 A 1.5 1.5 0 0 0 17.5 12 A 1.5 1.5 0 0 0 19 13.5 A 1.5 1.5 0 0 0 20.5 12 A 1.5 1.5 0 0 0 19 10.5 z M 13 14.419922 L 14.880859 16.289062 L 13 18.169922 L 13 14.419922 z"
+                            fill="url(#linearGradient1)"></path>
+                    </svg>
+                </div>
+                <div class="inset-shadow"></div>
+            </label>
+            <label class="popup" for="wtf">
+                <div class="popup-content">
+                    <div class="popup-header">Open settings</div>
+                </div>
+            </label>
+        </div>
+        <div class="settings-wrapper">
+            <input type="radio" name="menu" id="main" checked="" style="display: none" />
+            <input type="radio" name="menu" id="lgtv" style="display: none" />
+            <input type="checkbox" id="lgtv-paired" checked="" style="display: none" />
+            <input type="checkbox" id="lgtv-connected" style="display: none" />
+            <input type="radio" name="menu" id="lrls" style="display: none" />
+            <input type="checkbox" id="lrls-paired" style="display: none" />
+            <input type="checkbox" id="lrls-connected" style="display: none" />
+            <input type="radio" name="menu" id="jiph" style="display: none" />
+            <input type="radio" name="menu" id="d77c" style="display: none" />
+            <input type="radio" name="menu" id="undv" style="display: none" />
+            <div class="settings">
+                <div class="settings-inner">
+                    <div class="settings-header">
+                        <div class="header-main">
+                            <label class="back" for="wtf">
+                                <div class="back-text">&lt; Back</div>
+                            </label>
+                            <div class="vertical-line"></div>
+                            <div class="settings-title">Bluetooth settings</div>
+                        </div>
+                        <div class="header-sub">
+                            <label class="back" for="main">
+                                <div class="back-text">&lt; Back</div>
+                            </label>
+                            <div class="vertical-line"></div>
+                            <div class="settings-title"></div>
+                        </div>
+                    </div>
+                    <div class="settings-content">
+                        <div class="spinner loading">
+                            <div class="spinner-blade"></div>
+                            <div class="spinner-blade"></div>
+                            <div class="spinner-blade"></div>
+                            <div class="spinner-blade"></div>
+                            <div class="spinner-blade"></div>
+                            <div class="spinner-blade"></div>
+                            <div class="spinner-blade"></div>
+                            <div class="spinner-blade"></div>
+                            <div class="spinner-blade"></div>
+                            <div class="spinner-blade"></div>
+                            <div class="spinner-blade"></div>
+                            <div class="spinner-blade"></div>
+                        </div>
+                        <div class="settings-buttons">
+                            <label class="settings-button" for="lgtv">
+                                <div class="settings-button-content">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                        <path fill="currentColor"
+                                            d="M21,16H3V4H21M21,2H3C1.89,2 1,2.89 1,4V16A2,2 0 0,0 3,18H10V20H8V22H16V20H14V18H21A2,2 0 0,0 23,16V4C23,2.89 22.1,2 21,2Z">
+                                        </path>
+                                    </svg>
+                                    LG TV 55"
+                                </div>
+                            </label>
+                            <label class="settings-button" for="lrls">
+                                <div class="settings-button-content">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                        <path fill="currentColor"
+                                            d="M12,12A3,3 0 0,0 9,15A3,3 0 0,0 12,18A3,3 0 0,0 15,15A3,3 0 0,0 12,12M12,20A5,5 0 0,1 7,15A5,5 0 0,1 12,10A5,5 0 0,1 17,15A5,5 0 0,1 12,20M12,4A2,2 0 0,1 14,6A2,2 0 0,1 12,8C10.89,8 10,7.1 10,6C10,4.89 10.89,4 12,4M17,2H7C5.89,2 5,2.89 5,4V20A2,2 0 0,0 7,22H17A2,2 0 0,0 19,20V4C19,2.89 18.1,2 17,2Z">
+                                        </path>
+                                    </svg>
+                                    Living Room Speaker
+                                </div>
+                            </label>
+                            <label class="settings-button" for="jiph">
+                                <div class="settings-button-content">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                        <path fill="currentColor"
+                                            d="M17,19H7V5H17M17,1H7C5.89,1 5,1.89 5,3V21A2,2 0 0,0 7,23H17A2,2 0 0,0 19,21V3C19,1.89 18.1,1 17,1Z">
+                                        </path>
+                                    </svg>
+                                    Jessie's iPhone
+                                </div>
+                            </label>
+                            <label class="settings-button" for="d77c">
+                                <div class="settings-button-content">
+                                    <div class="spinner">
+                                        <div class="spinner-blade"></div>
+                                        <div class="spinner-blade"></div>
+                                        <div class="spinner-blade"></div>
+                                        <div class="spinner-blade"></div>
+                                        <div class="spinner-blade"></div>
+                                        <div class="spinner-blade"></div>
+                                        <div class="spinner-blade"></div>
+                                        <div class="spinner-blade"></div>
+                                        <div class="spinner-blade"></div>
+                                        <div class="spinner-blade"></div>
+                                        <div class="spinner-blade"></div>
+                                        <div class="spinner-blade"></div>
+                                    </div>
+                                    D77CACC0231C8ADF
+                                </div>
+                            </label>
+                            <label class="settings-button" for="undv">
+                                <div class="settings-button-content">
+                                    <div class="spinner">
+                                        <div class="spinner-blade"></div>
+                                        <div class="spinner-blade"></div>
+                                        <div class="spinner-blade"></div>
+                                        <div class="spinner-blade"></div>
+                                        <div class="spinner-blade"></div>
+                                        <div class="spinner-blade"></div>
+                                        <div class="spinner-blade"></div>
+                                        <div class="spinner-blade"></div>
+                                        <div class="spinner-blade"></div>
+                                        <div class="spinner-blade"></div>
+                                        <div class="spinner-blade"></div>
+                                        <div class="spinner-blade"></div>
+                                    </div>
+                                    Unknown device
+                                </div>
+                            </label>
+                            <label class="settings-button" for="undv">
+                                <div class="settings-button-content">
+                                    <div class="spinner">
+                                        <div class="spinner-blade"></div>
+                                        <div class="spinner-blade"></div>
+                                        <div class="spinner-blade"></div>
+                                        <div class="spinner-blade"></div>
+                                        <div class="spinner-blade"></div>
+                                        <div class="spinner-blade"></div>
+                                        <div class="spinner-blade"></div>
+                                        <div class="spinner-blade"></div>
+                                        <div class="spinner-blade"></div>
+                                        <div class="spinner-blade"></div>
+                                        <div class="spinner-blade"></div>
+                                        <div class="spinner-blade"></div>
+                                    </div>
+                                    Unknown device
+                                </div>
+                            </label>
+                        </div>
+                        <div class="settings-device">
+                            <div id="device" class="section">
+                                <div class="section-heading">Device</div>
+                                <div id="device-name" class="section-text">Name:</div>
+                                <div id="device-status" class="section-text">Status:</div>
+                            </div>
+                            <div id="use-for" class="section">
+                                <div class="section-heading">Use for</div>
+                                <div class="section-text">
+                                    Audio:
+                                    <label class="switch switch-lgtv">
+                                        <input type="checkbox" />
+                                        <span class="slider"></span>
+                                    </label>
+                                    <label class="switch switch-lrls">
+                                        <input type="checkbox" />
+                                        <span class="slider"></span>
+                                    </label>
+                                </div>
+                                <div class="section-text">
+                                    Video:
+                                    <label class="switch switch-lgtv">
+                                        <input type="checkbox" />
+                                        <span class="slider"></span>
+                                    </label>
+                                    <label class="switch switch-lrls">
+                                        <input type="checkbox" />
+                                        <span class="slider"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="section-bottom-buttons">
+                                <div class="buttons-pair">
+                                    <label id="device-pair-lgtv" for="lgtv-paired" class="section-text section-pair">
+                                    </label>
+                                    <label id="device-pair-lrls" for="lrls-paired" class="section-text section-pair">
+                                    </label>
+                                    <div tabindex="0" id="device-pair-dummy" for="lrls-paired"
+                                        class="section-text section-pair">
+                                        <div class="spinner">
+                                            <div class="spinner-blade"></div>
+                                            <div class="spinner-blade"></div>
+                                            <div class="spinner-blade"></div>
+                                            <div class="spinner-blade"></div>
+                                            <div class="spinner-blade"></div>
+                                            <div class="spinner-blade"></div>
+                                            <div class="spinner-blade"></div>
+                                            <div class="spinner-blade"></div>
+                                            <div class="spinner-blade"></div>
+                                            <div class="spinner-blade"></div>
+                                            <div class="spinner-blade"></div>
+                                            <div class="spinner-blade"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="buttons-connect">
+                                    <label id="device-connect-lgtv" for="lgtv-connected"
+                                        class="section-text section-connect">
+                                    </label>
+                                    <label id="device-connect-lrls" for="lrls-connected"
+                                        class="section-text section-connect">
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

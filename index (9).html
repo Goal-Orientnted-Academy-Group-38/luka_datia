@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animated Icon List</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+        integrity="sha512-yH+eW8xDcZJvMbq3I7IzUoXe7YeoNQeU9XqS9JHTnJ/UQ/5TcIO3ZLMIzgoG1Kkga7m6NBuIGboT+ibWpTcjXw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #151f28;
+            --clr: #ffcc00;
+        }
+
+        body {
+            background: var(--bg);
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            margin-top: 100px;
+        }
+
+        .container ul {
+            display: flex;
+            gap: 50px;
+        }
+
+        .container ul li {
+            list-style: none;
+            width: 80px;
+            height: 80px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.5s;
+        }
+
+        .container ul li::before {
+            content: "";
+            position: absolute;
+            inset: 30px;
+            box-shadow: 0 0 10px var(--bg), 0 0 22px var(--clr);
+            transition: inset 0.5s;
+        }
+
+        .container ul li:hover::before {
+            inset: 0;
+        }
+
+        .container ul li::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: var(--bg);
+            transform: rotate(45deg);
+        }
+
+        .container ul li:hover {
+            z-index: 1000;
+            transform: scale(0.75);
+        }
+
+        .container ul li a {
+            position: absolute;
+            text-decoration: none;
+            color: var(--clr);
+            font-size: 1.5em;
+            z-index: 10;
+            transition: font-size 0.5s, filter 0.5s;
+        }
+
+        .container ul li a:hover {
+            font-size: 3em;
+            filter: drop-shadow(0 0 20px var(--clr)) drop-shadow(0 0 40px var(--clr)) drop-shadow(0 0 60px var(--clr));
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <ul>
+            <li><a href="#"><i class="fab fa-youtube"></i></a></li>
+            <li><a href="#"><i class="fab fa-instagram"></i></a></li>
+            <li><a href="#"><i class="fab fa-whatsapp"></i></a></li>
+            <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
+            <li><a href="./image copy 7.png"><i class="fab fa-twitter"></i></a></li>
+        </ul>
+    </div>
+</body>
+
+</html>
